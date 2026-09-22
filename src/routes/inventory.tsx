@@ -85,7 +85,10 @@ function InventoryPage() {
             <select
               value={make ?? ""}
               onChange={(e) =>
-                navigate({ search: (prev) => ({ ...prev, make: e.target.value || undefined }) })
+                navigate({
+                  to: "/inventory",
+                  search: (prev) => ({ ...prev, make: e.target.value || undefined }),
+                })
               }
               className="engraved border border-hairline bg-background px-4 py-3"
             >
