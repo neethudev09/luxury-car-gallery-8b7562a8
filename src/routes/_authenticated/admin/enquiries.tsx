@@ -18,7 +18,6 @@ interface Enquiry {
   created_at: string;
 }
 
-export const Route_ = Route;
 
 function AdminEnquiries() {
   const queryClient = useQueryClient();

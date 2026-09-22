@@ -18,6 +18,11 @@ import { Route as InventoryRouteImport } from './routes/inventory'
 import { Route as SellRouteImport } from './routes/sell'
 import { Route as AuthenticatedAdminRouteRouteImport } from './routes/_authenticated/admin/route'
 import { Route as CarsSlugRouteImport } from './routes/cars.$slug'
+import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin/index'
+import { Route as AuthenticatedAdminEnquiriesRouteImport } from './routes/_authenticated/admin/enquiries'
+import { Route as AuthenticatedAdminSubmissionsRouteImport } from './routes/_authenticated/admin/submissions'
+import { Route as AuthenticatedAdminTeamRouteImport } from './routes/_authenticated/admin/team'
+import { Route as AuthenticatedAdminCarsIndexRouteImport } from './routes/_authenticated/admin/cars.index'
 import { Route as ApiPublicPhotoSplatRouteImport } from './routes/api/public/photo.$'
 
 const IndexRoute = IndexRouteImport.update({
@@ -64,6 +69,34 @@ const CarsSlugRoute = CarsSlugRouteImport.update({
   path: '/cars/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthenticatedAdminRouteRoute,
+} as any)
+const AuthenticatedAdminEnquiriesRoute =
+  AuthenticatedAdminEnquiriesRouteImport.update({
+    id: '/enquiries',
+    path: '/enquiries',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedAdminSubmissionsRoute =
+  AuthenticatedAdminSubmissionsRouteImport.update({
+    id: '/submissions',
+    path: '/submissions',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedAdminTeamRoute = AuthenticatedAdminTeamRouteImport.update({
+  id: '/team',
+  path: '/team',
+  getParentRoute: () => AuthenticatedAdminRouteRoute,
+} as any)
+const AuthenticatedAdminCarsIndexRoute =
+  AuthenticatedAdminCarsIndexRouteImport.update({
+    id: '/cars/',
+    path: '/cars/',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
 const ApiPublicPhotoSplatRoute = ApiPublicPhotoSplatRouteImport.update({
   id: '/api/public/photo/$',
   path: '/api/public/photo/$',
@@ -77,9 +110,14 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/inventory': typeof InventoryRoute
   '/sell': typeof SellRoute
-  '/admin': typeof AuthenticatedAdminRouteRoute
+  '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/cars/$slug': typeof CarsSlugRoute
+  '/admin/enquiries': typeof AuthenticatedAdminEnquiriesRoute
+  '/admin/submissions': typeof AuthenticatedAdminSubmissionsRoute
+  '/admin/team': typeof AuthenticatedAdminTeamRoute
+  '/admin/': typeof AuthenticatedAdminIndexRoute
   '/api/public/photo/$': typeof ApiPublicPhotoSplatRoute
+  '/admin/cars/': typeof AuthenticatedAdminCarsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -88,9 +126,13 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/inventory': typeof InventoryRoute
   '/sell': typeof SellRoute
-  '/admin': typeof AuthenticatedAdminRouteRoute
   '/cars/$slug': typeof CarsSlugRoute
+  '/admin/enquiries': typeof AuthenticatedAdminEnquiriesRoute
+  '/admin/submissions': typeof AuthenticatedAdminSubmissionsRoute
+  '/admin/team': typeof AuthenticatedAdminTeamRoute
+  '/admin': typeof AuthenticatedAdminIndexRoute
   '/api/public/photo/$': typeof ApiPublicPhotoSplatRoute
+  '/admin/cars': typeof AuthenticatedAdminCarsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -101,9 +143,14 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/inventory': typeof InventoryRoute
   '/sell': typeof SellRoute
-  '/_authenticated/admin': typeof AuthenticatedAdminRouteRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/cars/$slug': typeof CarsSlugRoute
+  '/_authenticated/admin/enquiries': typeof AuthenticatedAdminEnquiriesRoute
+  '/_authenticated/admin/submissions': typeof AuthenticatedAdminSubmissionsRoute
+  '/_authenticated/admin/team': typeof AuthenticatedAdminTeamRoute
+  '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/api/public/photo/$': typeof ApiPublicPhotoSplatRoute
+  '/_authenticated/admin/cars/': typeof AuthenticatedAdminCarsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -116,7 +163,12 @@ export interface FileRouteTypes {
     | '/sell'
     | '/admin'
     | '/cars/$slug'
+    | '/admin/enquiries'
+    | '/admin/submissions'
+    | '/admin/team'
+    | '/admin/'
     | '/api/public/photo/$'
+    | '/admin/cars/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -125,9 +177,13 @@ export interface FileRouteTypes {
     | '/contact'
     | '/inventory'
     | '/sell'
-    | '/admin'
     | '/cars/$slug'
+    | '/admin/enquiries'
+    | '/admin/submissions'
+    | '/admin/team'
+    | '/admin'
     | '/api/public/photo/$'
+    | '/admin/cars'
   id:
     | '__root__'
     | '/'
@@ -139,7 +195,12 @@ export interface FileRouteTypes {
     | '/sell'
     | '/_authenticated/admin'
     | '/cars/$slug'
+    | '/_authenticated/admin/enquiries'
+    | '/_authenticated/admin/submissions'
+    | '/_authenticated/admin/team'
+    | '/_authenticated/admin/'
     | '/api/public/photo/$'
+    | '/_authenticated/admin/cars/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -219,6 +280,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CarsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/admin/': {
+      id: '/_authenticated/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/enquiries': {
+      id: '/_authenticated/admin/enquiries'
+      path: '/enquiries'
+      fullPath: '/admin/enquiries'
+      preLoaderRoute: typeof AuthenticatedAdminEnquiriesRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/submissions': {
+      id: '/_authenticated/admin/submissions'
+      path: '/submissions'
+      fullPath: '/admin/submissions'
+      preLoaderRoute: typeof AuthenticatedAdminSubmissionsRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/team': {
+      id: '/_authenticated/admin/team'
+      path: '/team'
+      fullPath: '/admin/team'
+      preLoaderRoute: typeof AuthenticatedAdminTeamRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/cars/': {
+      id: '/_authenticated/admin/cars/'
+      path: '/cars'
+      fullPath: '/admin/cars/'
+      preLoaderRoute: typeof AuthenticatedAdminCarsIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
     '/api/public/photo/$': {
       id: '/api/public/photo/$'
       path: '/api/public/photo/$'
@@ -229,12 +325,34 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthenticatedAdminRouteRouteChildren {
+  AuthenticatedAdminEnquiriesRoute: typeof AuthenticatedAdminEnquiriesRoute
+  AuthenticatedAdminSubmissionsRoute: typeof AuthenticatedAdminSubmissionsRoute
+  AuthenticatedAdminTeamRoute: typeof AuthenticatedAdminTeamRoute
+  AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
+  AuthenticatedAdminCarsIndexRoute: typeof AuthenticatedAdminCarsIndexRoute
+}
+
+const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren =
+  {
+    AuthenticatedAdminEnquiriesRoute: AuthenticatedAdminEnquiriesRoute,
+    AuthenticatedAdminSubmissionsRoute: AuthenticatedAdminSubmissionsRoute,
+    AuthenticatedAdminTeamRoute: AuthenticatedAdminTeamRoute,
+    AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
+    AuthenticatedAdminCarsIndexRoute: AuthenticatedAdminCarsIndexRoute,
+  }
+
+const AuthenticatedAdminRouteRouteWithChildren =
+  AuthenticatedAdminRouteRoute._addFileChildren(
+    AuthenticatedAdminRouteRouteChildren,
+  )
+
 interface AuthenticatedRouteRouteChildren {
-  AuthenticatedAdminRouteRoute: typeof AuthenticatedAdminRouteRoute
+  AuthenticatedAdminRouteRoute: typeof AuthenticatedAdminRouteRouteWithChildren
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
-  AuthenticatedAdminRouteRoute: AuthenticatedAdminRouteRoute,
+  AuthenticatedAdminRouteRoute: AuthenticatedAdminRouteRouteWithChildren,
 }
 
 const AuthenticatedRouteRouteWithChildren =
