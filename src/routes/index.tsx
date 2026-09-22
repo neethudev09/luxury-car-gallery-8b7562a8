@@ -140,7 +140,7 @@ function Home() {
                 key={b.slug}
                 to="/inventory"
                 search={{ make: b.slug }}
-                className="group relative flex items-center justify-between bg-canvas p-6 transition-colors hover:bg-ink hover:text-ink-foreground"
+                className="group relative flex items-center justify-between bg-background p-6 transition-colors hover:bg-ink hover:text-ink-foreground"
               >
                 <span className="font-display text-lg uppercase tracking-[0.12em] transition-colors group-hover:text-accent">
                   {b.name}
