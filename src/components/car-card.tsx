@@ -1,57 +1,23 @@
 import { Link } from "@tanstack/react-router";
+import { ArrowUpRight } from "lucide-react";
 import type { Car } from "@/data/cars";
 import { formatPrice } from "@/data/cars";
 
 export function CarCard({ car }: { car: Car }) {
-  const photos = car.images?.length ?? 0;
-
   return (
-    <article className="group">
-      <Link
-        to="/cars/$slug"
-        params={{ slug: car.slug }}
-        className="relative block overflow-hidden bg-card"
-      >
-        <img
-          src={car.image}
-          alt={`${car.year} ${car.brand} ${car.model} for sale in Dubai`}
-          loading="lazy"
-          className="aspect-[4/3] w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
-        />
-        {photos > 1 && (
-          <span className="engraved absolute bottom-3 left-3 bg-ink/80 px-2.5 py-1.5 text-ink-foreground">
-            {photos} Photos
-          </span>
-        )}
-        {car.sold && (
-          <span className="engraved absolute top-3 left-3 bg-ink px-2.5 py-1.5 text-ink-foreground">
-            Sold
-          </span>
-        )}
+    <article className="group min-w-0">
+      <Link to="/cars/$slug" params={{ slug: car.slug }} className="relative block overflow-hidden bg-secondary">
+        <img src={car.image} alt={`${car.year} ${car.brand} ${car.model} for sale in Dubai`} loading="lazy" className="aspect-[1.28/1] w-full object-cover transition duration-700 group-hover:scale-[1.025]" />
+        <span className="absolute left-4 top-4 rounded-full bg-background/90 px-3 py-1.5 text-[9px] font-semibold uppercase backdrop-blur-md">{car.sold ? "Sold" : "Available"}</span>
+        <span className="absolute bottom-4 right-4 flex size-10 items-center justify-center rounded-full bg-background text-foreground opacity-0 transition duration-300 group-hover:opacity-100"><ArrowUpRight className="size-4" /></span>
       </Link>
-
-      <div className="mt-4 border-t border-hairline pt-4">
-        <p className="engraved text-muted-foreground">
-          {car.brand} · {car.year}
-        </p>
-        <h3 className="mt-2 text-lg leading-snug">
-          <Link to="/cars/$slug" params={{ slug: car.slug }} className="hover:text-accent">
-            {car.model}
-          </Link>
-        </h3>
-        <p className="mt-2 text-sm text-muted-foreground">
-          {car.mileage.toLocaleString("en-US")} km · {car.fuel} · {car.transmission}
-        </p>
-        <div className="mt-4 flex items-end justify-between gap-3">
-          <p className="font-display text-base">{formatPrice(car.price)}</p>
-          <Link
-            to="/cars/$slug"
-            params={{ slug: car.slug }}
-            className="engraved border-b border-accent pb-1 text-foreground hover:text-accent"
-          >
-            More Details
-          </Link>
+      <div className="flex items-start justify-between gap-5 pt-5">
+        <div className="min-w-0">
+          <p className="text-[10px] font-medium uppercase tracking-[0.16em] text-muted-foreground">{car.brand} · {car.year}</p>
+          <h3 className="mt-2 truncate text-base font-medium uppercase"><Link to="/cars/$slug" params={{ slug: car.slug }}>{car.model}</Link></h3>
+          <p className="mt-2 text-xs text-muted-foreground">{car.mileage.toLocaleString("en-US")} km · {car.transmission}</p>
         </div>
+        <p className="shrink-0 text-sm font-medium">{formatPrice(car.price)}</p>
       </div>
     </article>
   );

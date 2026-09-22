@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { PHONE, EMAIL, whatsappLink } from "@/data/cars";
+import showroomInterior from "@/assets/showroom-interior.jpg";
 
 export const Route = createFileRoute("/sell")({
   head: () => ({
@@ -49,28 +50,30 @@ function SellPage() {
   );
 
   return (
-    <div className="mx-auto max-w-[1500px] px-5 py-16 lg:px-10">
-      <p className="engraved text-muted-foreground">Selling Your Car</p>
-      <h1 className="mt-6 max-w-3xl text-3xl leading-tight md:text-4xl">
-        The Effortless Way To Sell Your Luxury Car
-      </h1>
+    <>
+      <section className="relative min-h-[560px] overflow-hidden bg-ink text-ink-foreground">
+        <img src={showroomInterior} alt="Luxury cars in our Dubai showroom" className="absolute inset-0 h-full w-full object-cover opacity-50" />
+        <div className="absolute inset-0 bg-gradient-to-r from-ink/90 via-ink/55 to-ink/10" />
+        <div className="relative mx-auto flex min-h-[560px] max-w-[1600px] items-end px-5 py-16 lg:px-10 lg:py-24"><div className="max-w-4xl"><p className="engraved text-ink-foreground/55">Sell your car</p><h1 className="mt-6 text-4xl font-medium uppercase leading-tight md:text-6xl">A discreet, effortless sale.</h1><p className="mt-6 max-w-xl text-base leading-7 text-ink-foreground/70">A considered valuation, prompt payment, and every detail handled by our team.</p></div></div>
+      </section>
 
-      <div className="mt-14 grid gap-14 lg:grid-cols-[1fr_1.1fr]">
+      <div className="mx-auto max-w-[1600px] px-5 py-20 lg:px-10 lg:py-28">
+      <div className="grid gap-16 lg:grid-cols-[0.75fr_1fr]">
         <div>
           <p className="leading-relaxed text-muted-foreground">
             We buy outright and we buy quickly. Send us the details of your car and our team will
             come back to you with a competitive valuation, usually within a few hours. If you accept,
             we handle inspection, paperwork, transfer and payment with complete discretion.
           </p>
-          <ul className="mt-10">
+          <ul className="mt-12 border-t border-hairline">
             {[
               "Valuation within hours, no obligation",
               "Payment on the same day as collection",
               "Finance settlement handled for you",
               "Collection anywhere in the UAE",
             ].map((item) => (
-              <li key={item} className="border-b border-hairline py-4 text-sm text-muted-foreground">
-                {item}
+              <li key={item} className="flex items-center gap-4 border-b border-hairline py-5 text-sm text-muted-foreground">
+                <span className="size-1.5 rounded-full bg-accent" />{item}
               </li>
             ))}
           </ul>
@@ -82,8 +85,9 @@ function SellPage() {
           </p>
         </div>
 
-        <div className="border border-hairline p-8">
-          <h2 className="text-xl">Request A Valuation</h2>
+        <div className="bg-card p-7 shadow-[0_24px_70px_-50px_var(--color-ink)] sm:p-10">
+          <p className="engraved text-muted-foreground">Your vehicle</p>
+          <h2 className="mt-4 text-2xl font-medium uppercase">Request a valuation</h2>
           <div className="mt-8 grid gap-6 sm:grid-cols-2">
             {field("Your Name", "name", "Full name")}
             {field("Phone", "phone", "+971 …", "tel")}
@@ -107,6 +111,7 @@ function SellPage() {
           </a>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 }

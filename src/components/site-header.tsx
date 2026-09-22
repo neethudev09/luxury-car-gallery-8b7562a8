@@ -1,125 +1,75 @@
 import { Link } from "@tanstack/react-router";
-import { Menu, Search, X } from "lucide-react";
-import { useState } from "react";
-import { PHONE, EMAIL, cars } from "@/data/cars";
+import { Menu, Search, X, Phone, ArrowUpRight } from "lucide-react";
+import { useEffect, useState } from "react";
+import { PHONE, EMAIL, whatsappLink } from "@/data/cars";
 import logoAsset from "@/assets/brand/lcg-logo.png.asset.json";
 import { Button } from "@/components/ui/button";
 
 const nav = [
   { label: "Inventory", to: "/inventory" as const },
-  { label: "About Us", to: "/about" as const },
-  { label: "Selling Your Car", to: "/sell" as const },
-  { label: "Contact Us", to: "/contact" as const },
+  { label: "About", to: "/about" as const },
+  { label: "Sell Your Car", to: "/sell" as const },
+  { label: "Contact", to: "/contact" as const },
 ];
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
-  const available = cars.filter((c) => !c.sold).length;
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [open]);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-ink-foreground/10 bg-ink/95 text-ink-foreground backdrop-blur-xl">
-      <div className="mx-auto flex h-[4.75rem] max-w-[1600px] items-center px-5 lg:h-[5.5rem] lg:px-10 xl:px-14">
-        <Link
-          to="/"
-          aria-label="Luxury Car Gallery home"
-          className="flex shrink-0 items-center transition-opacity hover:opacity-80"
-        >
-          <img
-            src={logoAsset.url}
-            alt="Luxury Car Gallery"
-            className="h-[62px] w-[116px] object-contain lg:h-[74px] lg:w-[142px]"
-          />
-        </Link>
+    <>
+      <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur-xl">
+        <div className="relative mx-auto flex h-16 max-w-[1600px] items-center justify-between px-5 lg:px-10">
+          <Button type="button" variant="ghost" onClick={() => setOpen(true)} className="h-10 gap-3 rounded-full px-3 text-foreground hover:bg-secondary" aria-label="Open menu">
+            <Menu className="size-[18px]" strokeWidth={1.6} />
+            <span className="hidden text-[10px] font-medium uppercase tracking-[0.25em] sm:inline">Menu</span>
+          </Button>
 
-        <nav className="ml-auto hidden h-full items-center gap-7 lg:flex xl:gap-10" aria-label="Main navigation">
-          {nav.map((item) => (
-            <Link
-              key={item.label}
-              to={item.to}
-              className="group relative flex h-full items-center font-sans text-[0.68rem] font-normal uppercase tracking-[0.2em] text-ink-foreground/65 transition-colors duration-300 hover:text-ink-foreground"
-              activeProps={{ className: "text-ink-foreground" }}
-            >
-              {item.label}
-              <span className="absolute bottom-0 left-0 h-px w-0 bg-accent transition-[width] duration-300 group-hover:w-full" />
+          <Link to="/" aria-label="Luxury Car Gallery home" className="absolute left-1/2 -translate-x-1/2">
+            <img src={logoAsset.url} alt="Luxury Car Gallery" className="h-14 w-28 object-contain brightness-0" />
+          </Link>
+
+          <div className="flex items-center gap-1">
+            <Link to="/inventory" aria-label="Search inventory" title="Search inventory" className="flex size-10 items-center justify-center rounded-full transition-colors hover:bg-secondary">
+              <Search className="size-[17px]" strokeWidth={1.6} />
             </Link>
-          ))}
-        </nav>
-
-        <div className="ml-auto hidden items-center gap-5 lg:flex xl:ml-12">
-          <Link
-            to="/inventory"
-            aria-label="Browse inventory"
-            title="Browse inventory"
-            className="flex size-9 items-center justify-center text-ink-foreground/55 transition-colors hover:text-accent"
-          >
-            <Search className="size-[18px]" strokeWidth={1.5} />
-          </Link>
-          <span className="h-5 w-px bg-ink-foreground/15" aria-hidden="true" />
-          <div className="hidden text-right 2xl:block">
-            <p className="font-sans text-[0.6rem] uppercase tracking-[0.2em] text-ink-foreground/45">
-              {available} motor cars available
-            </p>
-            <a
-              href={`tel:${PHONE.replace(/\s/g, "")}`}
-              className="font-sans text-xs tracking-[0.08em] text-ink-foreground transition-colors hover:text-accent"
-            >
-              {PHONE}
+            <a href={`tel:${PHONE.replace(/\s/g, "")}`} aria-label="Call showroom" title="Call showroom" className="hidden size-10 items-center justify-center rounded-full transition-colors hover:bg-secondary sm:flex">
+              <Phone className="size-[17px]" strokeWidth={1.6} />
             </a>
           </div>
-          <Link
-            to="/contact"
-            className="border border-ink-foreground/30 px-5 py-3 font-sans text-[0.65rem] font-medium uppercase tracking-[0.18em] text-ink-foreground transition-all duration-300 hover:border-accent hover:bg-accent hover:text-accent-foreground xl:px-7"
-          >
-            Book Appointment
-          </Link>
         </div>
+      </header>
 
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon"
-          onClick={() => setOpen((v) => !v)}
-          aria-label={open ? "Close menu" : "Open menu"}
-          aria-expanded={open}
-          className="ml-auto size-11 border border-ink-foreground/20 text-ink-foreground hover:border-accent hover:bg-transparent hover:text-accent lg:hidden"
-        >
-          {open ? <X className="size-5" strokeWidth={1.5} /> : <Menu className="size-5" strokeWidth={1.5} />}
-        </Button>
+      <div className={`fixed inset-0 z-[70] bg-ink text-ink-foreground transition duration-500 ${open ? "visible opacity-100" : "invisible opacity-0"}`} aria-hidden={!open}>
+        <div className="mx-auto flex h-full max-w-[1600px] flex-col px-5 lg:px-10">
+          <div className="relative flex h-16 shrink-0 items-center justify-between border-b border-ink-foreground/10">
+            <span className="engraved text-ink-foreground/45">Dubai · UAE</span>
+            <img src={logoAsset.url} alt="Luxury Car Gallery" className="absolute left-1/2 h-14 w-28 -translate-x-1/2 object-contain" />
+            <Button type="button" variant="ghost" size="icon" onClick={() => setOpen(false)} aria-label="Close menu" className="rounded-full text-ink-foreground hover:bg-ink-foreground/10 hover:text-ink-foreground">
+              <X className="size-5" />
+            </Button>
+          </div>
+
+          <div className="grid flex-1 items-center gap-10 py-8 lg:grid-cols-[1fr_0.42fr]">
+            <nav aria-label="Main navigation">
+              {nav.map((item, index) => (
+                <Link key={item.label} to={item.to} onClick={() => setOpen(false)} className="group flex items-center justify-between border-b border-ink-foreground/12 py-4 text-3xl font-medium uppercase transition-colors hover:text-accent sm:text-5xl lg:py-5 lg:text-6xl">
+                  <span>{item.label}</span>
+                  <span className="flex items-center gap-4 text-xs font-normal text-ink-foreground/35"><span>0{index + 1}</span><ArrowUpRight className="size-5 transition-transform group-hover:-translate-y-1 group-hover:translate-x-1" /></span>
+                </Link>
+              ))}
+            </nav>
+            <div className="space-y-7 lg:border-l lg:border-ink-foreground/10 lg:pl-12">
+              <div><p className="engraved text-ink-foreground/40">Showroom</p><p className="mt-3 text-sm">Al Quoz, Dubai, UAE</p></div>
+              <div><p className="engraved text-ink-foreground/40">Speak with us</p><a href={`tel:${PHONE.replace(/\s/g, "")}`} className="mt-3 block text-sm hover:text-accent">{PHONE}</a><a href={`mailto:${EMAIL}`} className="mt-2 block text-sm hover:text-accent">{EMAIL}</a></div>
+              <a href={whatsappLink("Hello, I would like to enquire about a car.")} target="_blank" rel="noreferrer" className="btn-light">WhatsApp Us <ArrowUpRight className="size-4" /></a>
+            </div>
+          </div>
+        </div>
       </div>
-
-      {open && (
-        <div className="border-t border-ink-foreground/10 bg-ink lg:hidden">
-          <nav className="px-5 py-3" aria-label="Mobile navigation">
-            {nav.map((item, index) => (
-              <Link
-                key={item.label}
-                to={item.to}
-                onClick={() => setOpen(false)}
-                className="flex items-center justify-between border-b border-ink-foreground/10 py-5 font-display text-base uppercase tracking-[0.12em] text-ink-foreground/85 transition-colors hover:text-accent"
-              >
-                <span>{item.label}</span>
-                <span className="font-sans text-[0.6rem] tracking-[0.16em] text-ink-foreground/35">
-                  0{index + 1}
-                </span>
-              </Link>
-            ))}
-          </nav>
-          <div className="grid grid-cols-2 border-t border-ink-foreground/10">
-            <a
-              href={`tel:${PHONE.replace(/\s/g, "")}`}
-              className="border-r border-ink-foreground/10 px-5 py-5 font-sans text-[0.65rem] uppercase tracking-[0.14em] text-accent"
-            >
-              Call showroom
-            </a>
-            <a
-              href={`mailto:${EMAIL}`}
-              className="px-5 py-5 text-right font-sans text-[0.65rem] uppercase tracking-[0.14em] text-ink-foreground/60"
-            >
-              Email us
-            </a>
-          </div>
-        </div>
-      )}
-    </header>
+    </>
   );
 }

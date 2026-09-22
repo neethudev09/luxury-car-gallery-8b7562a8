@@ -122,7 +122,7 @@ export const Route = createFileRoute("/cars/$slug")({
 
 function CarDetail() {
   const { car } = Route.useLoaderData();
-  const gallery = car.images?.length ? car.images : [car.image];
+  const gallery = [car.image, ...(car.images ?? []).filter((image) => image !== car.image)];
   const [active, setActive] = useState(0);
   const [lightbox, setLightbox] = useState(false);
   const index = Math.min(active, gallery.length - 1);
@@ -177,7 +177,7 @@ function CarDetail() {
         <img
           src={heroImage}
           alt={`${label} for sale in Dubai — photo ${index + 1} of ${gallery.length}`}
-          className="h-[52vw] max-h-[780px] min-h-[260px] w-full cursor-zoom-in object-cover"
+          className="h-[58vw] max-h-[840px] min-h-[380px] w-full cursor-zoom-in object-cover"
           onClick={() => setLightbox(true)}
         />
 
@@ -187,7 +187,7 @@ function CarDetail() {
               type="button"
               onClick={() => go(-1)}
               aria-label="Previous photo"
-              className="absolute left-0 top-1/2 -translate-y-1/2 bg-ink/50 p-4 text-ink-foreground transition hover:bg-ink lg:p-5"
+               className="absolute left-5 top-1/2 flex size-12 -translate-y-1/2 items-center justify-center rounded-full bg-background/90 text-foreground transition hover:bg-background lg:left-10"
             >
               <ChevronLeft className="size-6" />
             </button>
@@ -195,7 +195,7 @@ function CarDetail() {
               type="button"
               onClick={() => go(1)}
               aria-label="Next photo"
-              className="absolute right-0 top-1/2 -translate-y-1/2 bg-ink/50 p-4 text-ink-foreground transition hover:bg-ink lg:p-5"
+               className="absolute right-5 top-1/2 flex size-12 -translate-y-1/2 items-center justify-center rounded-full bg-background/90 text-foreground transition hover:bg-background lg:right-10"
             >
               <ChevronRight className="size-6" />
             </button>
@@ -206,7 +206,7 @@ function CarDetail() {
           type="button"
           onClick={() => setLightbox(true)}
           aria-label="View full screen"
-          className="engraved absolute bottom-0 right-0 flex items-center gap-2 bg-ink/75 px-4 py-2.5 text-ink-foreground transition hover:bg-ink"
+          className="absolute bottom-5 right-5 flex items-center gap-2 rounded-full bg-background/90 px-4 py-3 text-[10px] font-semibold uppercase text-foreground transition hover:bg-background lg:bottom-8 lg:right-10"
         >
           <Expand className="size-3.5" />
           <span>
@@ -215,10 +215,10 @@ function CarDetail() {
         </button>
       </section>
 
-      {/* Curated mosaic — fixed grid, no scrolling */}
+      {/* Compact editorial preview — fixed grid, no scrolling */}
       {gallery.length > 1 && (
-        <div className="bg-ink">
-          <div className="mx-auto grid max-w-[1500px] grid-cols-3 gap-px bg-ink-foreground/10 sm:grid-cols-6">
+        <div className="bg-background px-5 py-3 lg:px-10">
+          <div className="mx-auto grid max-w-[1600px] grid-cols-4 gap-2 sm:grid-cols-6">
             {gallery.slice(1, 6).map((img, i) => {
               const photoIndex = i + 1;
               return (
@@ -227,14 +227,14 @@ function CarDetail() {
                   type="button"
                   onClick={() => setActive(photoIndex)}
                   aria-label={`View photo ${photoIndex + 1} of ${gallery.length}`}
-                  className="group relative aspect-[4/3] overflow-hidden bg-ink"
+                   className="group relative aspect-[16/10] overflow-hidden bg-secondary"
                 >
                   <img
                     src={img}
                     alt=""
                     loading="lazy"
-                    className={`h-full w-full object-cover transition duration-500 group-hover:opacity-100 ${
-                      photoIndex === index ? "opacity-100" : "opacity-70"
+                     className={`h-full w-full object-cover transition duration-500 group-hover:opacity-100 ${
+                       photoIndex === index ? "opacity-100" : "opacity-75"
                     }`}
                   />
                   <span
@@ -253,13 +253,13 @@ function CarDetail() {
               type="button"
               onClick={() => setLightbox(true)}
               aria-label={`Open full gallery of ${gallery.length} photos`}
-              className="group relative flex aspect-[4/3] flex-col items-center justify-center bg-ink"
+               className="group relative flex aspect-[16/10] flex-col items-center justify-center bg-ink text-ink-foreground"
             >
               <span aria-hidden="true" className="absolute inset-0 bg-accent/5 transition group-hover:bg-transparent" />
               <span className="font-display text-xl font-light tracking-widest text-accent md:text-2xl">
                 {gallery.length > 6 ? `+${gallery.length - 6}` : gallery.length}
               </span>
-              <span className="engraved mt-2 text-ink-foreground/50">Catalogue</span>
+               <span className="mt-2 text-[9px] font-semibold uppercase text-ink-foreground/50">Gallery</span>
               <span
                 aria-hidden="true"
                 className="absolute inset-x-0 bottom-0 h-px origin-left scale-x-0 bg-accent transition-transform duration-500 group-hover:scale-x-100"
@@ -269,9 +269,9 @@ function CarDetail() {
         </div>
       )}
 
-      <div className="mx-auto max-w-[1500px] px-5 lg:px-10">
+      <div className="mx-auto max-w-[1600px] px-5 lg:px-10">
         {/* Title band */}
-        <header className="border-b border-hairline py-10 lg:py-14">
+        <header className="border-b border-hairline py-12 lg:py-20">
           <nav className="engraved text-muted-foreground">
             <Link to="/" className="hover:text-accent">
               Home
@@ -284,15 +284,15 @@ function CarDetail() {
             <span className="text-foreground">{car.model}</span>
           </nav>
 
-          <div className="mt-8 flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+          <div className="mt-10 flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
             <div>
               <p className="engraved text-muted-foreground">
                 {car.brand} · {car.year}
               </p>
-              <h1 className="mt-4 text-3xl leading-tight md:text-5xl">{car.model}</h1>
+              <h1 className="mt-4 max-w-4xl text-4xl font-medium uppercase leading-tight md:text-6xl">{car.model}</h1>
             </div>
             <div className="lg:text-right">
-              <p className="font-display text-2xl md:text-3xl">{formatPrice(car.price)}</p>
+              <p className="text-2xl font-medium md:text-3xl">{formatPrice(car.price)}</p>
               <p className="engraved mt-2 text-muted-foreground">
                 {car.sold ? "Sold" : "Available · Dubai Showroom"}
               </p>
@@ -316,9 +316,9 @@ function CarDetail() {
         </header>
 
         {/* Overview + spec table */}
-        <div className="grid gap-14 py-12 lg:grid-cols-[1.4fr_1fr] lg:py-16">
+        <div className="grid gap-16 py-16 lg:grid-cols-[1.2fr_0.8fr] lg:py-24">
           <div>
-            <h2 className="rule-accent text-2xl">Overview</h2>
+            <p className="engraved text-muted-foreground">The vehicle</p><h2 className="mt-4 text-3xl font-medium uppercase">Overview</h2>
             <p className="mt-10 leading-relaxed text-muted-foreground">{car.description}</p>
             <p className="mt-4 leading-relaxed text-muted-foreground">
               Inspected and prepared by our own workshop, with full documentation and history
@@ -328,7 +328,7 @@ function CarDetail() {
           </div>
 
           <div>
-            <h2 className="rule-accent text-2xl">Vehicle Details</h2>
+            <p className="engraved text-muted-foreground">At a glance</p><h2 className="mt-4 text-3xl font-medium uppercase">Vehicle Details</h2>
             <dl className="mt-10 border-t border-hairline">
               {specs.map(([k, v]) => (
                 <div key={k} className="flex justify-between gap-6 border-b border-hairline py-3">
@@ -341,8 +341,8 @@ function CarDetail() {
         </div>
 
         {/* Specification list */}
-        <section className="mt-20 border-t border-hairline pt-12 lg:pt-16">
-          <h2 className="rule-accent text-2xl">Specification</h2>
+        <section className="mt-12 border-t border-hairline pt-16 lg:pt-20">
+          <p className="engraved text-muted-foreground">Equipment and features</p><h2 className="mt-4 text-3xl font-medium uppercase">Specification</h2>
           <ul className="mt-12 grid gap-x-12 gap-y-0 sm:grid-cols-2 lg:grid-cols-3">
             {car.features.map((f) => (
               <li
@@ -359,7 +359,7 @@ function CarDetail() {
         </section>
 
         {/* Selling your car */}
-        <section className="mt-20 flex flex-col gap-8 bg-ink px-6 py-12 text-ink-foreground lg:flex-row lg:items-center lg:justify-between lg:px-12">
+        <section className="mt-24 flex flex-col gap-8 bg-ink px-7 py-14 text-ink-foreground lg:flex-row lg:items-center lg:justify-between lg:px-14 lg:py-16">
           <div className="max-w-2xl">
             <h2 className="text-2xl">Selling Your Car</h2>
             <p className="mt-4 text-sm leading-relaxed text-ink-foreground/70">
