@@ -107,8 +107,8 @@
   font-size: 0.7rem;
   font-weight: 600;
   text-transform: uppercase;
-  transition: background 0.25s ease, transform 0.25s ease;
-  &:hover { background: var(--color-accent); transform: translateY(-1px); }
+  transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease;
+  &:hover { background: var(--color-accent); color: var(--color-accent-foreground); transform: translateY(-1px); }
 }
 
 @utility btn-outline-ink {
