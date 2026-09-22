@@ -132,7 +132,7 @@ function Home() {
           </Link>
         </div>
 
-        <div className="mt-10 grid grid-cols-1 gap-px bg-hairline sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
           {brands.map((b) => {
             const count = counts[b.slug] ?? 0;
             return (
@@ -140,18 +140,17 @@ function Home() {
                 key={b.slug}
                 to="/inventory"
                 search={{ make: b.slug }}
-                className="group relative flex items-center justify-between bg-background p-6 transition-colors hover:bg-ink hover:text-ink-foreground"
+                className="group flex items-center justify-between border border-hairline bg-background p-5 transition-all duration-300 hover:border-accent hover:bg-ink hover:text-ink-foreground"
               >
-                <span className="font-display text-lg uppercase tracking-[0.12em] transition-colors group-hover:text-accent">
+                <span className="font-display text-base uppercase tracking-[0.12em] transition-colors group-hover:text-accent sm:text-lg">
                   {b.name}
                 </span>
                 <div className="text-right">
-                  <span className="block font-display text-2xl font-normal leading-none">{count}</span>
+                  <span className="block font-display text-xl font-normal leading-none sm:text-2xl">{count}</span>
                   <span className="engraved block text-[10px] uppercase tracking-[0.18em] text-muted-foreground group-hover:text-ink-foreground/60">
                     Available
                   </span>
                 </div>
-                <span className="absolute inset-x-0 bottom-0 h-[2px] scale-x-0 bg-accent transition-transform duration-300 group-hover:scale-x-100" />
               </Link>
             );
           })}
