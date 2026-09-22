@@ -165,3 +165,30 @@
     color: var(--color-ink);
   }
 }
+
+@utility btn-light {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: var(--color-ink-foreground);
+  color: var(--color-ink);
+  padding: 0.95rem 2rem;
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.7rem;
+  transition:
+    background 0.25s ease,
+    color 0.25s ease;
+  &:hover {
+    background: var(--color-accent);
+    color: var(--color-accent-foreground);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  video {
+    display: none;
+  }
+}

@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { PHONE, EMAIL, cars } from "@/data/cars";
+import logoAsset from "@/assets/brand/lcg-logo.png.asset.json";
 
 const nav = [
   { label: "Inventory", to: "/inventory" as const },
@@ -14,12 +15,14 @@ export function SiteHeader() {
   const available = cars.filter((c) => !c.sold).length;
 
   return (
-    <header className="sticky top-0 z-50 bg-ink text-ink-foreground">
-      <div className="mx-auto flex max-w-[1500px] items-center gap-6 px-5 py-4 lg:px-10">
-        <Link to="/" className="flex shrink-0 items-baseline gap-3">
-          <span className="font-display text-lg tracking-[0.18em] uppercase lg:text-2xl">
-            Luxury Car Gallery
-          </span>
+    <header className="sticky top-0 z-50 border-b border-white/10 bg-ink/95 text-ink-foreground backdrop-blur-md">
+      <div className="mx-auto flex h-20 max-w-[1500px] items-center gap-6 px-5 lg:h-24 lg:px-10">
+        <Link to="/" aria-label="Luxury Car Gallery home" className="flex shrink-0 items-center">
+          <img
+            src={logoAsset.url}
+            alt="Luxury Car Gallery"
+            className="h-[66px] w-[124px] object-contain lg:h-[82px] lg:w-[158px]"
+          />
         </Link>
 
         <div className="ml-auto hidden flex-col items-end gap-3 lg:flex">
