@@ -47,7 +47,7 @@ function InventoryPage() {
 
   const make = search.make;
   const body = search.body;
-  const newArrival = search.new === "true";
+  const newArrival = search.arrival === "true";
 
   const list = useMemo(() => {
     let out = cars.filter((c) => (make ? c.brandSlug === make : true));
