@@ -3,6 +3,7 @@ import { useMemo, useState } from "react";
 import { CarCard } from "@/components/car-card";
 import { brands, cars, bodyTypes } from "@/data/cars";
 import heroShowroom from "@/assets/hero-showroom.jpg";
+import { SlidersHorizontal } from "lucide-react";
 
 type InventorySearch = {
   make?: string | undefined;
@@ -69,21 +70,22 @@ function InventoryPage() {
 
   return (
     <>
-      <section className="relative">
+      <section className="relative overflow-hidden bg-ink">
         <img
           src={heroShowroom}
           alt="Luxury Car Gallery showroom in Dubai"
-          className="h-[38vh] min-h-[280px] w-full object-cover"
+          className="h-[48vh] min-h-[380px] w-full object-cover opacity-65"
         />
-        <div className="absolute inset-0 flex flex-col items-center justify-center bg-ink/55 px-6 text-center">
-          <h1 className="text-3xl text-white uppercase md:text-5xl">Current Inventory</h1>
-          <span className="mt-6 block h-px w-24 bg-white/70" />
+        <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-t from-ink/70 to-ink/10 px-6 text-center text-ink-foreground">
+          <p className="engraved text-ink-foreground/55">Dubai showroom</p>
+          <h1 className="mt-5 text-4xl font-medium uppercase md:text-6xl">The Collection</h1>
+          <p className="mt-5 max-w-lg text-sm leading-6 text-ink-foreground/65">Luxury, performance and classic cars, selected for distinction.</p>
         </div>
       </section>
 
       <div className="mx-auto max-w-[1500px] px-5 lg:px-10">
-        <div className="flex flex-wrap items-center gap-4 border-b border-hairline py-6">
-          <p className="engraved text-muted-foreground">Showing {list.length} Vehicles</p>
+        <div className="flex flex-wrap items-center gap-4 border-b border-hairline py-7">
+          <p className="flex items-center gap-2 text-xs font-semibold uppercase"><SlidersHorizontal className="size-4" /> {list.length} Vehicles</p>
 
           <div className="ml-auto flex flex-wrap gap-3">
             <select
@@ -94,7 +96,8 @@ function InventoryPage() {
                   search: (prev) => ({ ...prev, make: e.target.value || undefined }),
                 })
               }
-              className="engraved border border-hairline bg-background px-4 py-3"
+              aria-label="Filter by manufacturer"
+              className="rounded-full border border-hairline bg-background px-5 py-3 text-[10px] font-semibold uppercase outline-none focus:border-foreground"
             >
               <option value="">All Manufacturers</option>
               {brands.map((b) => (
@@ -112,7 +115,8 @@ function InventoryPage() {
                   search: (prev) => ({ ...prev, body: e.target.value || undefined }),
                 })
               }
-              className="engraved border border-hairline bg-background px-4 py-3"
+              aria-label="Filter by body type"
+              className="rounded-full border border-hairline bg-background px-5 py-3 text-[10px] font-semibold uppercase outline-none focus:border-foreground"
             >
               <option value="">All Body Types</option>
               {bodyTypes.map((b) => (
@@ -125,7 +129,8 @@ function InventoryPage() {
             <select
               value={sort}
               onChange={(e) => setSort(e.target.value)}
-              className="engraved border border-hairline bg-background px-4 py-3"
+              aria-label="Sort vehicles"
+              className="rounded-full border border-hairline bg-background px-5 py-3 text-[10px] font-semibold uppercase outline-none focus:border-foreground"
             >
               <option value="price-desc">Price: High to Low</option>
               <option value="price-asc">Price: Low to High</option>
@@ -143,7 +148,7 @@ function InventoryPage() {
             </Link>
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-x-8 gap-y-14 py-14 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-x-6 gap-y-14 py-14 sm:grid-cols-2 lg:grid-cols-3">
             {list.map((car) => (
               <CarCard key={car.slug} car={car} />
             ))}

@@ -26,14 +26,13 @@ export const Route = createFileRoute("/contact")({
 
 function ContactPage() {
   return (
-    <div className="mx-auto max-w-[1500px] px-5 py-16 lg:px-10">
-      <p className="engraved text-muted-foreground">Contact Us</p>
-      <h1 className="mt-6 max-w-3xl text-3xl leading-tight md:text-4xl">
-        Arrange A Viewing At Our Dubai Showroom
-      </h1>
+    <div className="mx-auto max-w-[1600px] px-5 py-20 lg:px-10 lg:py-28">
+      <p className="engraved text-muted-foreground">Private appointments</p>
+      <h1 className="mt-6 max-w-4xl text-4xl font-medium uppercase leading-tight md:text-6xl">Visit Luxury Car Gallery.</h1>
+      <p className="mt-6 max-w-xl text-base leading-7 text-muted-foreground">Arrange a private viewing, discuss a specific vehicle, or speak to our sourcing team.</p>
 
-      <div className="mt-14 grid gap-12 md:grid-cols-3">
-        <div className="border-t border-hairline pt-6">
+      <div className="mt-20 grid gap-px bg-border md:grid-cols-3">
+        <div className="min-h-60 bg-card p-8">
           <p className="engraved text-muted-foreground">Telephone</p>
           <a
             href={`tel:${PHONE.replace(/\s/g, "")}`}
@@ -45,7 +44,7 @@ function ContactPage() {
             Saturday to Thursday, 9am – 8pm (GST)
           </p>
         </div>
-        <div className="border-t border-hairline pt-6">
+        <div className="min-h-60 bg-card p-8">
           <p className="engraved text-muted-foreground">Email</p>
           <a
             href={`mailto:${EMAIL}`}
@@ -57,7 +56,7 @@ function ContactPage() {
             We reply to every enquiry the same day.
           </p>
         </div>
-        <div className="border-t border-hairline pt-6">
+        <div className="min-h-60 bg-card p-8">
           <p className="engraved text-muted-foreground">Showroom</p>
           <p className="mt-4 font-display text-lg">Al Quoz, Dubai</p>
           <p className="mt-3 text-sm text-muted-foreground">
