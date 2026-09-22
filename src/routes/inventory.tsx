@@ -63,13 +63,13 @@ function InventoryPage() {
     else if (sort === "km-asc") sorted.sort((a, b) => a.mileage - b.mileage);
     else sorted.sort((a, b) => b.price - a.price);
     return sorted;
-  }, [make, body, newArrival, sort]);
+  }, [cars, make, body, newArrival, sort]);
 
   const counts = useMemo(() => {
     const m: Record<string, number> = {};
     for (const c of cars) m[c.brandSlug] = (m[c.brandSlug] ?? 0) + 1;
     return m;
-  }, []);
+  }, [cars]);
 
   return (
     <>
