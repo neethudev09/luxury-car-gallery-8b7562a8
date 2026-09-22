@@ -1,4 +1,5 @@
 import carPlaceholder from "@/assets/car-placeholder.jpg";
+import { photoUrl, type CarRow } from "@/lib/catalogue-types";
 import cullinanBB1 from "@/assets/cars/rolls-royce-cullinan-black-badge-2021/1.webp";
 import cullinanBB2 from "@/assets/cars/rolls-royce-cullinan-black-badge-2021/2.webp";
 import cullinanBB3 from "@/assets/cars/rolls-royce-cullinan-black-badge-2021/3.webp";
@@ -808,4 +809,52 @@ export const EMAIL = "info@cargallerydubai.com";
 
 export function whatsappLink(message: string) {
   return `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(message)}`;
+}
+
+/** Local bundled galleries, keyed by car slug. */
+export { carGalleries };
+
+/** Turns a database listing row into the Car shape used across the site. */
+export function carFromRow(row: CarRow): Car {
+  const p = perf[row.brand_slug] ?? { engine: "V8", hp: 600, tq: 700, top: 320, accel: 3.4 };
+  const uploaded = (row.image_urls ?? []).filter(Boolean).map(photoUrl);
+  const local = carGalleries[row.gallery_slug ?? row.slug] ?? [];
+  const gallery = uploaded.length ? uploaded : local;
+  return {
+    slug: row.slug,
+    title: row.title,
+    brand: row.brand,
+    brandSlug: row.brand_slug,
+    model: row.model,
+    year: row.year,
+    price: Number(row.price),
+    mileage: row.mileage,
+    fuel: row.fuel,
+    transmission: row.transmission,
+    bodyType: row.body_type,
+    exteriorColour: row.exterior_colour,
+    interiorColour: row.interior_colour,
+    engine: p.engine,
+    horsepower: p.hp,
+    torque: p.tq,
+    topSpeed: p.top,
+    accel: p.accel,
+    image: gallery[0] ?? carPlaceholder,
+    ...(gallery.length ? { images: gallery } : {}),
+    featured: row.featured,
+    newArrival: row.year >= 2024 && !row.sold,
+    sold: row.sold,
+    description: row.description,
+    features: fmtFeatures,
+    specs: {
+      Engine: p.engine,
+      Power: `${p.hp} bhp`,
+      Torque: `${p.tq} Nm`,
+      "0-100 km/h": `${p.accel}s`,
+      "Top Speed": `${p.top} km/h`,
+      Drivetrain: "All-Wheel Drive",
+      Transmission: row.transmission,
+      "Body Type": row.body_type,
+    },
+  };
 }

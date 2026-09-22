@@ -2,12 +2,14 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useCallback, useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight, Expand, X } from "lucide-react";
 import { CarCard } from "@/components/car-card";
-import { cars, getCar, formatPrice, PHONE, EMAIL, whatsappLink } from "@/data/cars";
+import { cars, getCar, carFromRow, formatPrice, PHONE, EMAIL, whatsappLink } from "@/data/cars";
 import { getRequestOrigin } from "@/lib/origin.functions";
+import { getPublicCar } from "@/lib/catalogue.functions";
 
 export const Route = createFileRoute("/cars/$slug")({
   loader: async ({ params }) => {
-    const car = getCar(params.slug);
+    const row = await getPublicCar({ data: { slug: params.slug } }).catch(() => null);
+    const car = row ? carFromRow(row) : getCar(params.slug);
     if (!car) throw notFound();
     const origin = await getRequestOrigin();
     return { car, origin };

@@ -1,7 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { CarCard } from "@/components/car-card";
-import { brands, cars, bodyTypes } from "@/data/cars";
+import { brands, bodyTypes } from "@/data/cars";
+import { useCatalogue } from "@/hooks/use-catalogue";
 import heroShowroom from "@/assets/hero-showroom.jpg";
 import { SlidersHorizontal } from "lucide-react";
 
@@ -50,6 +51,8 @@ function InventoryPage() {
   const body = search.body;
   const newArrival = search.latest === true;
 
+  const { cars } = useCatalogue();
+
   const list = useMemo(() => {
     let out = cars.filter((c) => (make ? c.brandSlug === make : true));
     if (body) out = out.filter((c) => c.bodyType === body);
@@ -60,13 +63,13 @@ function InventoryPage() {
     else if (sort === "km-asc") sorted.sort((a, b) => a.mileage - b.mileage);
     else sorted.sort((a, b) => b.price - a.price);
     return sorted;
-  }, [make, body, newArrival, sort]);
+  }, [cars, make, body, newArrival, sort]);
 
   const counts = useMemo(() => {
     const m: Record<string, number> = {};
     for (const c of cars) m[c.brandSlug] = (m[c.brandSlug] ?? 0) + 1;
     return m;
-  }, []);
+  }, [cars]);
 
   return (
     <>

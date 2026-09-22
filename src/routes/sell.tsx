@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { PHONE, EMAIL, whatsappLink } from "@/data/cars";
+import { supabase } from "@/integrations/supabase/client";
 import showroomInterior from "@/assets/showroom-interior.jpg";
 
 export const Route = createFileRoute("/sell")({
@@ -28,8 +29,33 @@ export const Route = createFileRoute("/sell")({
 
 function SellPage() {
   const [form, setForm] = useState({ name: "", phone: "", car: "", year: "", mileage: "" });
+  const [busy, setBusy] = useState(false);
+  const [sent, setSent] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const message = `Valuation request%0AName: ${form.name}%0APhone: ${form.phone}%0ACar: ${form.car}%0AYear: ${form.year}%0AMileage: ${form.mileage} km`;
+
+  async function submit(e: React.FormEvent) {
+    e.preventDefault();
+    setBusy(true);
+    setError(null);
+    const [brand, ...rest] = form.car.trim().split(" ");
+    const { error: err } = await supabase.from("sell_submissions").insert({
+      name: form.name,
+      phone: form.phone,
+      brand: brand || null,
+      model: rest.join(" ") || null,
+      year: form.year ? Number(form.year.replace(/\D/g, "")) : null,
+      mileage: form.mileage ? Number(form.mileage.replace(/\D/g, "")) : null,
+      notes: `Submitted from the website valuation form. Vehicle: ${form.car}`,
+    });
+    setBusy(false);
+    if (err) setError("We could not send your request. Please try WhatsApp below.");
+    else {
+      setSent(true);
+      setForm({ name: "", phone: "", car: "", year: "", mileage: "" });
+    }
+  }
 
   const field = (
     label: string,
@@ -85,7 +111,7 @@ function SellPage() {
           </p>
         </div>
 
-        <div className="bg-card p-7 shadow-[0_24px_70px_-50px_var(--color-ink)] sm:p-10">
+        <form onSubmit={submit} className="bg-card p-7 shadow-[0_24px_70px_-50px_var(--color-ink)] sm:p-10">
           <p className="engraved text-muted-foreground">Your vehicle</p>
           <h2 className="mt-4 text-2xl font-medium uppercase">Request a valuation</h2>
           <div className="mt-8 grid gap-6 sm:grid-cols-2">
@@ -95,11 +121,16 @@ function SellPage() {
             {field("Year", "year", "2024")}
             {field("Mileage (km)", "mileage", "12,000")}
           </div>
+          <button type="submit" disabled={busy || !form.name || !form.phone} className="btn-ink mt-8 w-full justify-center">
+            {busy ? "Sending…" : "Request Valuation"}
+          </button>
+          {sent ? <p className="mt-4 text-sm text-muted-foreground">Thank you — our team has your details and will be in touch shortly.</p> : null}
+          {error ? <p className="mt-4 text-sm text-accent">{error}</p> : null}
           <a
             href={`${whatsappLink("")}${message}`}
             target="_blank"
             rel="noreferrer"
-            className="btn-ink mt-8 w-full"
+            className="btn-outline-ink mt-3 w-full"
           >
             Send Via WhatsApp
           </a>
@@ -109,7 +140,7 @@ function SellPage() {
           >
             Send By Email
           </a>
-        </div>
+        </form>
       </div>
       </div>
     </>

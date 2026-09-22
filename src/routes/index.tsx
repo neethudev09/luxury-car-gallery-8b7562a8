@@ -2,7 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import "car-makes-icons/dist/style.css";
 import { CarCard } from "@/components/car-card";
-import { brands, cars, featuredCars, PHONE, whatsappLink } from "@/data/cars";
+import { brands, PHONE, whatsappLink } from "@/data/cars";
+import { useCatalogue } from "@/hooks/use-catalogue";
 import heroShowroom from "@/assets/hero-showroom.jpg";
 import showroomInterior from "@/assets/showroom-interior.jpg";
 import heroVideoAsset from "@/assets/brand/hero-video.mp4.asset.json";
@@ -33,9 +34,10 @@ export const Route = createFileRoute("/")({
 });
 
 function Home() {
-  const available = cars.filter((car) => !car.sold).length;
-  const featured = (featuredCars.length ? featuredCars : cars).slice(0, 6);
-  const spotlight = featured[0] ?? cars[0];
+  const catalogue = useCatalogue();
+  const available = catalogue.available.length;
+  const featured = (catalogue.featured.length ? catalogue.featured : catalogue.cars).slice(0, 6);
+  const spotlight = featured[0] ?? catalogue.cars[0];
 
   return <>
     <section className="relative min-h-[640px] h-[calc(100svh-4rem)] overflow-hidden bg-ink">
