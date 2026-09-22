@@ -4,13 +4,17 @@ import { CarCard } from "@/components/car-card";
 import { brands, cars, bodyTypes } from "@/data/cars";
 import heroShowroom from "@/assets/hero-showroom.jpg";
 
-type InventorySearch = { make?: string; body?: string; sort?: string };
+type InventorySearch = {
+  make?: string | undefined;
+  body?: string | undefined;
+  sort?: string | undefined;
+};
 
 export const Route = createFileRoute("/inventory")({
   validateSearch: (search: Record<string, unknown>): InventorySearch => ({
-    make: typeof search.make === "string" ? search.make : undefined,
-    body: typeof search.body === "string" ? search.body : undefined,
-    sort: typeof search.sort === "string" ? search.sort : undefined,
+    make: typeof search["make"] === "string" ? search["make"] : undefined,
+    body: typeof search["body"] === "string" ? search["body"] : undefined,
+    sort: typeof search["sort"] === "string" ? search["sort"] : undefined,
   }),
   head: () => ({
     meta: [
