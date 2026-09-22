@@ -8,6 +8,7 @@ type InventorySearch = {
   make?: string | undefined;
   body?: string | undefined;
   sort?: string | undefined;
+  newArrival?: string | undefined;
 };
 
 export const Route = createFileRoute("/inventory")({
@@ -15,6 +16,7 @@ export const Route = createFileRoute("/inventory")({
     make: typeof search["make"] === "string" ? search["make"] : undefined,
     body: typeof search["body"] === "string" ? search["body"] : undefined,
     sort: typeof search["sort"] === "string" ? search["sort"] : undefined,
+    newArrival: typeof search["newArrival"] === "string" ? search["newArrival"] : undefined,
   }),
   head: () => ({
     meta: [
