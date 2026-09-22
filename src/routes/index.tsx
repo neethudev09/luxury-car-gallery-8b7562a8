@@ -28,7 +28,7 @@ function Home() {
       <video className="absolute inset-0 h-full w-full object-cover brightness-110" autoPlay muted loop playsInline preload="metadata" poster={heroShowroom} aria-hidden="true"><source src={heroVideoAsset.url} type="video/mp4" /></video>
       <div className="absolute inset-0 bg-ink/25" /><div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-ink/85 via-ink/15 to-transparent" />
       <div className="relative mx-auto flex h-full max-w-[1600px] items-end px-5 pb-14 lg:px-10 lg:pb-20">
-        <div className="max-w-2xl text-ink-foreground"><p className="engraved text-ink-foreground/65">Featured collection · Dubai</p><h1 className="mt-5 text-4xl font-medium uppercase leading-[1.03] sm:text-6xl lg:text-7xl">{spotlight ? `${spotlight.brand} ${spotlight.model}` : "Luxury Car Gallery"}</h1><p className="mt-3 text-sm uppercase text-ink-foreground/65">{spotlight?.year ?? "Exceptional cars"}</p><Link to={spotlight ? "/cars/$slug" : "/inventory"} params={spotlight ? { slug: spotlight.slug } : undefined} search={spotlight ? undefined : {}} className="btn-light mt-8">View vehicle <ArrowRight className="size-4" /></Link></div>
+        <div className="max-w-2xl text-ink-foreground"><p className="engraved text-ink-foreground/65">Featured collection · Dubai</p><h1 className="mt-5 text-4xl font-medium uppercase leading-[1.03] sm:text-6xl lg:text-7xl">{spotlight ? `${spotlight.brand} ${spotlight.model}` : "Luxury Car Gallery"}</h1><p className="mt-3 text-sm uppercase text-ink-foreground/65">{spotlight?.year ?? "Exceptional cars"}</p>{spotlight ? <Link to="/cars/$slug" params={{ slug: spotlight.slug }} className="btn-light mt-8">View vehicle <ArrowRight className="size-4" /></Link> : <Link to="/inventory" search={{}} className="btn-light mt-8">View inventory <ArrowRight className="size-4" /></Link>}</div>
       </div>
     </section>
 
@@ -45,10 +45,22 @@ function Home() {
 
     <section className="mx-auto max-w-[1600px] px-5 py-10 lg:px-10 lg:py-20"><div className="flex items-end justify-between gap-8"><div><p className="engraved text-muted-foreground">Available now</p><h2 className="mt-4 text-3xl font-medium uppercase sm:text-5xl">The collection</h2></div><Link to="/inventory" search={{}} className="hidden items-center gap-2 text-xs font-semibold uppercase sm:flex">View all <ArrowRight className="size-4" /></Link></div><div className="mt-12 grid gap-x-6 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">{featured.map((car) => <CarCard key={car.slug} car={car} />)}</div><Link to="/inventory" search={{}} className="btn-outline-ink mt-12 sm:hidden">View all cars</Link></section>
 
-    <section className="mx-auto grid max-w-[1600px] gap-px bg-border px-0 lg:grid-cols-2">{[
-      ["Available Cars", "Explore the collection", "/inventory"], ["New Arrivals", "See the latest additions", "/inventory"], ["Sell Your Car", "Request a private valuation", "/sell"], ["Contact", "Arrange a showroom visit", "/contact"],
-    ].map(([title, copy, to], index) => <Link key={title} to={to} search={to === "/inventory" ? (index === 1 ? { latest: true } : {}) : undefined} className="group flex min-h-64 flex-col justify-between bg-ink p-8 text-ink-foreground transition-colors hover:bg-foreground lg:min-h-80 lg:p-12"><span className="engraved text-ink-foreground/35">0{index + 1}</span><div><h3 className="text-2xl font-medium uppercase sm:text-3xl">{title}</h3><div className="mt-4 flex items-center justify-between text-sm text-ink-foreground/55"><span>{copy}</span><ArrowUpRight className="size-5 transition-transform group-hover:-translate-y-1 group-hover:translate-x-1" /></div></div></Link>)}</section>
+    <section className="mx-auto grid max-w-[1600px] gap-px bg-border px-0 lg:grid-cols-2">
+      <ActionLink index={0} title="Available Cars" copy="Explore the collection" to="inventory" />
+      <ActionLink index={1} title="New Arrivals" copy="See the latest additions" to="latest" />
+      <ActionLink index={2} title="Sell Your Car" copy="Request a private valuation" to="sell" />
+      <ActionLink index={3} title="Contact" copy="Arrange a showroom visit" to="contact" />
+    </section>
 
     <section className="mx-auto max-w-[1600px] px-5 py-24 text-center lg:px-10 lg:py-32"><p className="engraved text-muted-foreground">Personal service, worldwide reach</p><h2 className="mx-auto mt-5 max-w-4xl text-3xl font-medium uppercase leading-tight sm:text-5xl">Looking for something exceptional?</h2><p className="mx-auto mt-6 max-w-xl text-sm leading-6 text-muted-foreground">Tell our team what you are searching for. We can source, inspect and deliver the right vehicle discreetly.</p><a href={whatsappLink("Hello, I am looking for a specific car.")} target="_blank" rel="noreferrer" className="btn-ink mt-9">Speak with our team <ArrowUpRight className="size-4" /></a></section>
   </>;
+}
+
+function ActionLink({ index, title, copy, to }: { index: number; title: string; copy: string; to: "inventory" | "latest" | "sell" | "contact" }) {
+  const className = "group flex min-h-64 flex-col justify-between bg-ink p-8 text-ink-foreground transition-colors hover:bg-foreground lg:min-h-80 lg:p-12";
+  const content = <><span className="engraved text-ink-foreground/35">0{index + 1}</span><div><h3 className="text-2xl font-medium uppercase sm:text-3xl">{title}</h3><div className="mt-4 flex items-center justify-between text-sm text-ink-foreground/55"><span>{copy}</span><ArrowUpRight className="size-5 transition-transform group-hover:-translate-y-1 group-hover:translate-x-1" /></div></div></>;
+  if (to === "inventory") return <Link to="/inventory" search={{}} className={className}>{content}</Link>;
+  if (to === "latest") return <Link to="/inventory" search={{ latest: true }} className={className}>{content}</Link>;
+  if (to === "sell") return <Link to="/sell" className={className}>{content}</Link>;
+  return <Link to="/contact" className={className}>{content}</Link>;
 }
