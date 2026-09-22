@@ -222,6 +222,27 @@ function CarDetail() {
         </button>
       </section>
 
+      {/* Thumbnail strip */}
+      {gallery.length > 1 && (
+        <div className="border-b border-hairline bg-background">
+          <div className="mx-auto flex max-w-[1500px] gap-2 overflow-x-auto px-5 py-3 lg:gap-3 lg:px-10">
+            {gallery.map((img, i) => (
+              <button
+                key={`${img}-strip-${i}`}
+                type="button"
+                onClick={() => setActive(i)}
+                aria-label={`View photo ${i + 1} of ${gallery.length}`}
+                className={`w-[92px] shrink-0 border transition lg:w-[110px] ${
+                  i === index ? "border-accent" : "border-hairline hover:border-accent"
+                }`}
+              >
+                <img src={img} alt="" loading="lazy" className="aspect-[4/3] w-full object-cover" />
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
       <div className="mx-auto max-w-[1500px] px-5 lg:px-10">
         {/* Title band */}
         <header className="border-b border-hairline py-10 lg:py-14">
@@ -268,28 +289,8 @@ function CarDetail() {
           </div>
         </header>
 
-        {/* Large stacked feature images */}
-        <div className="space-y-5 py-12 lg:space-y-8 lg:py-16">
-          {feature.map((img, i) => (
-            <button
-              key={`${img}-${i}`}
-              type="button"
-              onClick={() => openAt(gallery.indexOf(img) === -1 ? 0 : gallery.indexOf(img))}
-              className="block w-full cursor-zoom-in"
-              aria-label={`View larger photo of ${label}`}
-            >
-              <img
-                src={img}
-                alt={`${label} — detail ${i + 1}`}
-                loading="lazy"
-                className="aspect-[16/9] w-full object-cover"
-              />
-            </button>
-          ))}
-        </div>
-
         {/* Overview + spec table */}
-        <div className="grid gap-14 border-t border-hairline pt-12 lg:grid-cols-[1.4fr_1fr] lg:pt-16">
+        <div className="grid gap-14 py-12 lg:grid-cols-[1.4fr_1fr] lg:py-16">
           <div>
             <h2 className="rule-accent text-2xl">Overview</h2>
             <p className="mt-10 leading-relaxed text-muted-foreground">{car.description}</p>
