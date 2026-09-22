@@ -122,7 +122,7 @@ export const Route = createFileRoute("/cars/$slug")({
 
 function CarDetail() {
   const { car } = Route.useLoaderData();
-  const gallery = car.images?.length ? car.images : [car.image];
+  const gallery = [car.image, ...(car.images ?? []).filter((image) => image !== car.image)];
   const [active, setActive] = useState(0);
   const [lightbox, setLightbox] = useState(false);
   const index = Math.min(active, gallery.length - 1);

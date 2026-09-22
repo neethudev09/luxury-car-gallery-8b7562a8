@@ -5,5 +5,5 @@
 - [x] Redesign homepage and vehicle cards
 - [x] Restyle inventory, about, sell, and contact pages
 - [x] Refine vehicle gallery and details layout
-- [ ] Validate desktop and mobile user flows
-- [ ] Confirm route metadata remains complete
+- [x] Validate desktop and mobile user flows
+- [x] Confirm route metadata remains complete

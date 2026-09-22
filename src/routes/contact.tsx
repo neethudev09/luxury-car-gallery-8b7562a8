@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PHONE, EMAIL, whatsappLink } from "@/data/cars";
+import showroomInterior from "@/assets/showroom-interior.jpg";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -26,10 +27,13 @@ export const Route = createFileRoute("/contact")({
 
 function ContactPage() {
   return (
-    <div className="mx-auto max-w-[1600px] px-5 py-20 lg:px-10 lg:py-28">
-      <p className="engraved text-muted-foreground">Private appointments</p>
-      <h1 className="mt-6 max-w-4xl text-4xl font-medium uppercase leading-tight md:text-6xl">Visit Luxury Car Gallery.</h1>
-      <p className="mt-6 max-w-xl text-base leading-7 text-muted-foreground">Arrange a private viewing, discuss a specific vehicle, or speak to our sourcing team.</p>
+    <>
+      <section className="relative min-h-[520px] overflow-hidden bg-ink text-ink-foreground">
+        <img src={showroomInterior} alt="Luxury Car Gallery showroom in Dubai" className="absolute inset-0 h-full w-full object-cover opacity-50" />
+        <div className="absolute inset-0 bg-gradient-to-r from-ink/90 via-ink/50 to-transparent" />
+        <div className="relative mx-auto flex min-h-[520px] max-w-[1600px] items-end px-5 py-16 lg:px-10 lg:py-24"><div><p className="engraved text-ink-foreground/55">Private appointments</p><h1 className="mt-6 max-w-4xl text-4xl font-medium uppercase leading-tight md:text-6xl">Visit Luxury Car Gallery.</h1><p className="mt-6 max-w-xl text-base leading-7 text-ink-foreground/70">Arrange a private viewing, discuss a specific vehicle, or speak to our sourcing team.</p></div></div>
+      </section>
+      <div className="mx-auto max-w-[1600px] px-5 py-20 lg:px-10 lg:py-28">
 
       <div className="mt-20 grid gap-px bg-border md:grid-cols-3">
         <div className="min-h-60 bg-card p-8">
@@ -73,6 +77,7 @@ function ContactPage() {
       >
         Message Us On WhatsApp
       </a>
-    </div>
+      </div>
+    </>
   );
 }
