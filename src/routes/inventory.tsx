@@ -76,7 +76,7 @@ function InventoryPage() {
           className="h-[38vh] min-h-[280px] w-full object-cover"
         />
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-ink/55 px-6 text-center">
-          <h1 className="text-3xl text-white uppercase md:text-5xl">Current Inventory</h1>
+          <h1 className="text-3xl text-white uppercase md:text-5xl">Current Inventory TEST</h1>
           <span className="mt-6 block h-px w-24 bg-white/70" />
         </div>
       </section>
