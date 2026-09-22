@@ -3,12 +3,14 @@ import { useCallback, useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight, Expand, X } from "lucide-react";
 import { CarCard } from "@/components/car-card";
 import { cars, getCar, formatPrice, PHONE, EMAIL, whatsappLink } from "@/data/cars";
+import { getRequestOrigin } from "@/lib/origin.functions";
 
 export const Route = createFileRoute("/cars/$slug")({
-  loader: ({ params }) => {
+  loader: async ({ params }) => {
     const car = getCar(params.slug);
     if (!car) throw notFound();
-    return { car };
+    const origin = await getRequestOrigin();
+    return { car, origin };
   },
   head: ({ loaderData, params }) => {
     if (!loaderData) {
@@ -16,25 +18,49 @@ export const Route = createFileRoute("/cars/$slug")({
         meta: [{ title: "Vehicle Unavailable — Luxury Car Gallery" }, { name: "robots", content: "noindex" }],
       };
     }
-    const { car } = loaderData;
-    const title = `${car.year} ${car.brand} ${car.model} For Sale In Dubai | Luxury Car Gallery`;
+    const { car, origin } = loaderData;
+    const label = `${car.year} ${car.brand} ${car.model}`;
+    const title = `${label} For Sale In Dubai | Luxury Car Gallery`;
+    const description = `${label} in ${car.exteriorColour} — ${car.mileage.toLocaleString("en-US")} km, ${car.engine}, ${car.horsepower} bhp. ${formatPrice(car.price)}${car.sold ? " (sold)" : ""}. Available from our Dubai showroom with worldwide delivery.`;
+    const path = `/cars/${params.slug}`;
+    const url = origin ? `${origin}${path}` : path;
+    const shareImage = car.image?.startsWith("/") && origin ? `${origin}${car.image}` : null;
     return {
       meta: [
         { title },
-        { name: "description", content: car.description },
+        { name: "description", content: description },
+        { property: "og:site_name", content: "Luxury Car Gallery" },
         { property: "og:title", content: title },
-        { property: "og:description", content: car.description },
+        { property: "og:description", content: description },
         { property: "og:type", content: "product" },
-        { property: "og:url", content: `/cars/${params.slug}` },
+        { property: "og:url", content: url },
         { name: "twitter:card", content: "summary_large_image" },
+        { name: "twitter:title", content: title },
+        { name: "twitter:description", content: description },
+        ...(shareImage
+          ? [
+              { property: "og:image", content: shareImage },
+              { property: "og:image:alt", content: `${label} for sale in Dubai` },
+              { name: "twitter:image", content: shareImage },
+            ]
+          : []),
+        { property: "product:price:amount", content: String(car.price) },
+        { property: "product:price:currency", content: "AED" },
+        { property: "product:availability", content: car.sold ? "oos" : "in stock" },
       ],
-      links: [{ rel: "canonical", href: `/cars/${params.slug}` }],
+      links: [{ rel: "canonical", href: path }],
       scripts: [
         {
           type: "application/ld+json",
           children: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "Car",
+            url,
+            description,
+            ...(shareImage ? { image: [shareImage] } : {}),
+            itemCondition: "https://schema.org/UsedCondition",
+            numberOfDoors: car.bodyType === "Coupe" ? 2 : undefined,
+            vehicleEngine: { "@type": "EngineSpecification", name: car.engine },
             name: `${car.year} ${car.brand} ${car.model}`,
             brand: { "@type": "Brand", name: car.brand },
             vehicleModelDate: String(car.year),
@@ -49,12 +75,43 @@ export const Route = createFileRoute("/cars/$slug")({
             },
             offers: {
               "@type": "Offer",
+              url,
               price: car.price,
               priceCurrency: "AED",
+              itemCondition: "https://schema.org/UsedCondition",
               availability: car.sold
                 ? "https://schema.org/SoldOut"
                 : "https://schema.org/InStock",
+              seller: {
+                "@type": "AutoDealer",
+                name: "Luxury Car Gallery",
+                telephone: PHONE,
+                email: EMAIL,
+                address: {
+                  "@type": "PostalAddress",
+                  streetAddress: "Al Quoz",
+                  addressLocality: "Dubai",
+                  addressCountry: "AE",
+                },
+              },
             },
+          }),
+        },
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "Home", item: origin || "/" },
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: "Inventory",
+                item: origin ? `${origin}/inventory` : "/inventory",
+              },
+              { "@type": "ListItem", position: 3, name: label, item: url },
+            ],
           }),
         },
       ],
