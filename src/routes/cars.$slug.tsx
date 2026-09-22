@@ -1,5 +1,6 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { ChevronLeft, ChevronRight, Expand, X } from "lucide-react";
 import { CarCard } from "@/components/car-card";
 import { cars, getCar, formatPrice, PHONE, EMAIL, whatsappLink } from "@/data/cars";
 
@@ -66,7 +67,33 @@ function CarDetail() {
   const { car } = Route.useLoaderData();
   const gallery = car.images?.length ? car.images : [car.image];
   const [active, setActive] = useState(0);
-  const heroImage = gallery[Math.min(active, gallery.length - 1)] ?? car.image;
+  const [lightbox, setLightbox] = useState(false);
+  const index = Math.min(active, gallery.length - 1);
+  const heroImage = gallery[index] ?? car.image;
+  const label = `${car.year} ${car.brand} ${car.model}`;
+
+  const go = useCallback(
+    (dir: number) => setActive((i) => (i + dir + gallery.length) % gallery.length),
+    [gallery.length],
+  );
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "ArrowRight") go(1);
+      else if (e.key === "ArrowLeft") go(-1);
+      else if (e.key === "Escape") setLightbox(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [go]);
+
+  useEffect(() => {
+    document.body.style.overflow = lightbox ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [lightbox]);
+
 
   const similar = cars
     .filter((c) => c.slug !== car.slug && (c.brandSlug === car.brandSlug || c.bodyType === car.bodyType))
@@ -89,32 +116,118 @@ function CarDetail() {
       </nav>
 
       <div className="mt-8 grid gap-12 lg:grid-cols-[1.55fr_1fr]">
-        <div>
-          <img
-            src={heroImage}
-            alt={`${car.year} ${car.brand} ${car.model} for sale in Dubai`}
-            className="aspect-[4/3] w-full bg-card object-cover"
-          />
+        <div className="min-w-0">
+          <div className="group relative bg-card">
+            <img
+              src={heroImage}
+              alt={`${label} for sale in Dubai — photo ${index + 1} of ${gallery.length}`}
+              className="aspect-[4/3] w-full cursor-zoom-in object-cover"
+              onClick={() => setLightbox(true)}
+            />
+
+            {gallery.length > 1 && (
+              <>
+                <button
+                  type="button"
+                  onClick={() => go(-1)}
+                  aria-label="Previous photo"
+                  className="absolute left-0 top-1/2 -translate-y-1/2 bg-ink/60 p-3 text-ink-foreground opacity-0 transition hover:bg-ink focus-visible:opacity-100 group-hover:opacity-100"
+                >
+                  <ChevronLeft className="size-5" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => go(1)}
+                  aria-label="Next photo"
+                  className="absolute right-0 top-1/2 -translate-y-1/2 bg-ink/60 p-3 text-ink-foreground opacity-0 transition hover:bg-ink focus-visible:opacity-100 group-hover:opacity-100"
+                >
+                  <ChevronRight className="size-5" />
+                </button>
+              </>
+            )}
+
+            <button
+              type="button"
+              onClick={() => setLightbox(true)}
+              aria-label="View full screen"
+              className="engraved absolute bottom-0 right-0 flex items-center gap-2 bg-ink/75 px-3 py-2 text-ink-foreground transition hover:bg-ink"
+            >
+              <Expand className="size-3.5" />
+              <span>
+                {index + 1} / {gallery.length}
+              </span>
+            </button>
+          </div>
+
           {gallery.length > 1 && (
-            <div className="mt-3 grid grid-cols-5 gap-3 sm:grid-cols-6">
+            <div className="mt-3 flex gap-3 overflow-x-auto pb-2">
               {gallery.map((img, i) => (
                 <button
                   key={`${img}-${i}`}
                   type="button"
                   onClick={() => setActive(i)}
                   aria-label={`View photo ${i + 1}`}
-                  className={
-                    i === active
-                      ? "border border-accent"
-                      : "border border-transparent opacity-70 transition hover:opacity-100"
-                  }
+                  aria-current={i === index}
+                  className={`w-[110px] shrink-0 border transition sm:w-[130px] ${
+                    i === index
+                      ? "border-accent"
+                      : "border-hairline opacity-60 hover:opacity-100"
+                  }`}
                 >
-                  <img src={img} alt="" className="aspect-[4/3] w-full object-cover" />
+                  <img src={img} alt="" loading="lazy" className="aspect-[4/3] w-full object-cover" />
                 </button>
               ))}
             </div>
           )}
+
+          {lightbox && (
+            <div
+              className="fixed inset-0 z-50 flex flex-col bg-ink/97"
+              role="dialog"
+              aria-modal="true"
+              aria-label={`${label} photo gallery`}
+            >
+              <div className="flex items-center justify-between px-5 py-4 lg:px-10">
+                <p className="engraved text-ink-foreground">
+                  {label} · {index + 1} / {gallery.length}
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setLightbox(false)}
+                  aria-label="Close gallery"
+                  className="p-2 text-ink-foreground transition hover:text-accent"
+                >
+                  <X className="size-6" />
+                </button>
+              </div>
+
+              <div className="relative flex flex-1 items-center justify-center overflow-hidden px-4 pb-6">
+                <img src={heroImage} alt="" className="max-h-full max-w-full object-contain" />
+                {gallery.length > 1 && (
+                  <>
+                    <button
+                      type="button"
+                      onClick={() => go(-1)}
+                      aria-label="Previous photo"
+                      className="absolute left-2 top-1/2 -translate-y-1/2 bg-ink/60 p-3 text-ink-foreground transition hover:bg-ink lg:left-6"
+                    >
+                      <ChevronLeft className="size-6" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => go(1)}
+                      aria-label="Next photo"
+                      className="absolute right-2 top-1/2 -translate-y-1/2 bg-ink/60 p-3 text-ink-foreground transition hover:bg-ink lg:right-6"
+                    >
+                      <ChevronRight className="size-6" />
+                    </button>
+                  </>
+                )}
+              </div>
+            </div>
+          )}
         </div>
+
 
         <div>
           <p className="engraved text-muted-foreground">
