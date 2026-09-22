@@ -23,6 +23,7 @@ import { Route as AuthenticatedAdminEnquiriesRouteImport } from './routes/_authe
 import { Route as AuthenticatedAdminSubmissionsRouteImport } from './routes/_authenticated/admin/submissions'
 import { Route as AuthenticatedAdminTeamRouteImport } from './routes/_authenticated/admin/team'
 import { Route as AuthenticatedAdminCarsIndexRouteImport } from './routes/_authenticated/admin/cars.index'
+import { Route as AuthenticatedAdminCarsCarIdRouteImport } from './routes/_authenticated/admin/cars.$carId'
 import { Route as ApiPublicPhotoSplatRouteImport } from './routes/api/public/photo.$'
 
 const IndexRoute = IndexRouteImport.update({
@@ -97,6 +98,12 @@ const AuthenticatedAdminCarsIndexRoute =
     path: '/cars/',
     getParentRoute: () => AuthenticatedAdminRouteRoute,
   } as any)
+const AuthenticatedAdminCarsCarIdRoute =
+  AuthenticatedAdminCarsCarIdRouteImport.update({
+    id: '/cars/$carId',
+    path: '/cars/$carId',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
 const ApiPublicPhotoSplatRoute = ApiPublicPhotoSplatRouteImport.update({
   id: '/api/public/photo/$',
   path: '/api/public/photo/$',
@@ -116,6 +123,7 @@ export interface FileRoutesByFullPath {
   '/admin/submissions': typeof AuthenticatedAdminSubmissionsRoute
   '/admin/team': typeof AuthenticatedAdminTeamRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
+  '/admin/cars/$carId': typeof AuthenticatedAdminCarsCarIdRoute
   '/api/public/photo/$': typeof ApiPublicPhotoSplatRoute
   '/admin/cars/': typeof AuthenticatedAdminCarsIndexRoute
 }
@@ -131,6 +139,7 @@ export interface FileRoutesByTo {
   '/admin/submissions': typeof AuthenticatedAdminSubmissionsRoute
   '/admin/team': typeof AuthenticatedAdminTeamRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
+  '/admin/cars/$carId': typeof AuthenticatedAdminCarsCarIdRoute
   '/api/public/photo/$': typeof ApiPublicPhotoSplatRoute
   '/admin/cars': typeof AuthenticatedAdminCarsIndexRoute
 }
@@ -149,6 +158,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/submissions': typeof AuthenticatedAdminSubmissionsRoute
   '/_authenticated/admin/team': typeof AuthenticatedAdminTeamRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
+  '/_authenticated/admin/cars/$carId': typeof AuthenticatedAdminCarsCarIdRoute
   '/api/public/photo/$': typeof ApiPublicPhotoSplatRoute
   '/_authenticated/admin/cars/': typeof AuthenticatedAdminCarsIndexRoute
 }
@@ -167,6 +177,7 @@ export interface FileRouteTypes {
     | '/admin/submissions'
     | '/admin/team'
     | '/admin/'
+    | '/admin/cars/$carId'
     | '/api/public/photo/$'
     | '/admin/cars/'
   fileRoutesByTo: FileRoutesByTo
@@ -182,6 +193,7 @@ export interface FileRouteTypes {
     | '/admin/submissions'
     | '/admin/team'
     | '/admin'
+    | '/admin/cars/$carId'
     | '/api/public/photo/$'
     | '/admin/cars'
   id:
@@ -199,6 +211,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/submissions'
     | '/_authenticated/admin/team'
     | '/_authenticated/admin/'
+    | '/_authenticated/admin/cars/$carId'
     | '/api/public/photo/$'
     | '/_authenticated/admin/cars/'
   fileRoutesById: FileRoutesById
@@ -315,6 +328,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminCarsIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
+    '/_authenticated/admin/cars/$carId': {
+      id: '/_authenticated/admin/cars/$carId'
+      path: '/cars/$carId'
+      fullPath: '/admin/cars/$carId'
+      preLoaderRoute: typeof AuthenticatedAdminCarsCarIdRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
     '/api/public/photo/$': {
       id: '/api/public/photo/$'
       path: '/api/public/photo/$'
@@ -330,6 +350,7 @@ interface AuthenticatedAdminRouteRouteChildren {
   AuthenticatedAdminSubmissionsRoute: typeof AuthenticatedAdminSubmissionsRoute
   AuthenticatedAdminTeamRoute: typeof AuthenticatedAdminTeamRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
+  AuthenticatedAdminCarsCarIdRoute: typeof AuthenticatedAdminCarsCarIdRoute
   AuthenticatedAdminCarsIndexRoute: typeof AuthenticatedAdminCarsIndexRoute
 }
 
@@ -339,6 +360,7 @@ const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren
     AuthenticatedAdminSubmissionsRoute: AuthenticatedAdminSubmissionsRoute,
     AuthenticatedAdminTeamRoute: AuthenticatedAdminTeamRoute,
     AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
+    AuthenticatedAdminCarsCarIdRoute: AuthenticatedAdminCarsCarIdRoute,
     AuthenticatedAdminCarsIndexRoute: AuthenticatedAdminCarsIndexRoute,
   }
 
