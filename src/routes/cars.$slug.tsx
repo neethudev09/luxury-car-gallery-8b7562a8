@@ -3,12 +3,14 @@ import { useCallback, useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight, Expand, X } from "lucide-react";
 import { CarCard } from "@/components/car-card";
 import { cars, getCar, formatPrice, PHONE, EMAIL, whatsappLink } from "@/data/cars";
+import { getRequestOrigin } from "@/lib/origin.functions";
 
 export const Route = createFileRoute("/cars/$slug")({
-  loader: ({ params }) => {
+  loader: async ({ params }) => {
     const car = getCar(params.slug);
     if (!car) throw notFound();
-    return { car };
+    const origin = await getRequestOrigin();
+    return { car, origin };
   },
   head: ({ loaderData, params }) => {
     if (!loaderData) {
