@@ -1,10 +1,24 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
+import "car-makes-icons/dist/style.css";
 import { CarCard } from "@/components/car-card";
 import { brands, cars, featuredCars, PHONE, whatsappLink } from "@/data/cars";
 import heroShowroom from "@/assets/hero-showroom.jpg";
 import showroomInterior from "@/assets/showroom-interior.jpg";
 import heroVideoAsset from "@/assets/brand/hero-video.mp4.asset.json";
+
+const brandIconMap: Record<string, string> = {
+  "aston-martin": "car-aston-martin",
+  bentley: "car-bentley",
+  bmw: "car-bmw",
+  ferrari: "car-ferrari",
+  lamborghini: "car-lamborghini",
+  "mercedes-benz": "car-mercedes-benz",
+  porsche: "car-porsche",
+  "range-rover": "car-land-rover",
+  "rolls-royce": "car-rolls-royce",
+  tesla: "car-tesla",
+};
 
 export const Route = createFileRoute("/")({
   head: () => ({ meta: [
