@@ -144,7 +144,7 @@ function Home() {
         </div>
       </section>
 
-      <section className="border-y border-hairline bg-card">
+      <section id="showroom" className="border-y border-hairline bg-card">
         <div className="mx-auto grid max-w-[1500px] gap-14 px-5 py-20 lg:grid-cols-2 lg:px-10">
           <div>
             <h2 className="rule-accent text-2xl md:text-3xl">Welcome To Luxury Car Gallery</h2>

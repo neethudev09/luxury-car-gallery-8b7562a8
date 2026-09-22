@@ -8,6 +8,7 @@ type InventorySearch = {
   make?: string | undefined;
   body?: string | undefined;
   sort?: string | undefined;
+  latest?: boolean | undefined;
 };
 
 export const Route = createFileRoute("/inventory")({
@@ -15,6 +16,7 @@ export const Route = createFileRoute("/inventory")({
     make: typeof search["make"] === "string" ? search["make"] : undefined,
     body: typeof search["body"] === "string" ? search["body"] : undefined,
     sort: typeof search["sort"] === "string" ? search["sort"] : undefined,
+    latest: search["latest"] === true || search["latest"] === "true" ? true : undefined,
   }),
   head: () => ({
     meta: [
@@ -45,17 +47,19 @@ function InventoryPage() {
 
   const make = search.make;
   const body = search.body;
+  const newArrival = search.latest === true;
 
   const list = useMemo(() => {
     let out = cars.filter((c) => (make ? c.brandSlug === make : true));
     if (body) out = out.filter((c) => c.bodyType === body);
+    if (newArrival) out = out.filter((c) => c.newArrival);
     const sorted = [...out];
     if (sort === "price-asc") sorted.sort((a, b) => a.price - b.price);
     else if (sort === "year-desc") sorted.sort((a, b) => b.year - a.year);
     else if (sort === "km-asc") sorted.sort((a, b) => a.mileage - b.mileage);
     else sorted.sort((a, b) => b.price - a.price);
     return sorted;
-  }, [make, body, sort]);
+  }, [make, body, newArrival, sort]);
 
   const counts = useMemo(() => {
     const m: Record<string, number> = {};
