@@ -4,7 +4,6 @@ import { brands, cars, featuredCars, PHONE, whatsappLink } from "@/data/cars";
 import heroShowroom from "@/assets/hero-showroom.jpg";
 import showroomInterior from "@/assets/showroom-interior.jpg";
 import heroVideoAsset from "@/assets/brand/hero-video.mp4.asset.json";
-import logoAsset from "@/assets/brand/lcg-logo.png.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -64,7 +63,7 @@ function Home() {
           className="absolute inset-0 h-full w-full object-cover"
         />
         <video
-          className="absolute inset-0 h-full w-full object-cover"
+          className="absolute inset-0 h-full w-full object-cover brightness-110"
           autoPlay
           muted
           loop
@@ -75,14 +74,9 @@ function Home() {
         >
           <source src={heroVideoAsset.url} type="video/mp4" />
         </video>
-        <div className="absolute inset-0 bg-ink/50" />
-        <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-ink/85 to-transparent" />
+        <div className="absolute inset-0 bg-ink/20" />
+        <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-ink/70 to-transparent" />
         <div className="relative mx-auto flex h-full max-w-[1500px] flex-col items-start justify-end px-5 pb-16 lg:px-10 lg:pb-20">
-          <img
-            src={logoAsset.url}
-            alt="Luxury Car Gallery"
-            className="mb-7 h-auto w-48 object-contain md:w-60"
-          />
           <p className="engraved border-l border-accent pl-4 text-ink-foreground/80">
             Dubai · Luxury, Performance &amp; Classic Cars
           </p>
