@@ -18,25 +18,49 @@ export const Route = createFileRoute("/cars/$slug")({
         meta: [{ title: "Vehicle Unavailable — Luxury Car Gallery" }, { name: "robots", content: "noindex" }],
       };
     }
-    const { car } = loaderData;
-    const title = `${car.year} ${car.brand} ${car.model} For Sale In Dubai | Luxury Car Gallery`;
+    const { car, origin } = loaderData;
+    const label = `${car.year} ${car.brand} ${car.model}`;
+    const title = `${label} For Sale In Dubai | Luxury Car Gallery`;
+    const description = `${label} in ${car.exteriorColour} — ${car.mileage.toLocaleString("en-US")} km, ${car.engine}, ${car.horsepower} bhp. ${formatPrice(car.price)}${car.sold ? " (sold)" : ""}. Available from our Dubai showroom with worldwide delivery.`;
+    const path = `/cars/${params.slug}`;
+    const url = origin ? `${origin}${path}` : path;
+    const shareImage = car.image?.startsWith("/") && origin ? `${origin}${car.image}` : null;
     return {
       meta: [
         { title },
-        { name: "description", content: car.description },
+        { name: "description", content: description },
+        { property: "og:site_name", content: "Luxury Car Gallery" },
         { property: "og:title", content: title },
-        { property: "og:description", content: car.description },
+        { property: "og:description", content: description },
         { property: "og:type", content: "product" },
-        { property: "og:url", content: `/cars/${params.slug}` },
+        { property: "og:url", content: url },
         { name: "twitter:card", content: "summary_large_image" },
+        { name: "twitter:title", content: title },
+        { name: "twitter:description", content: description },
+        ...(shareImage
+          ? [
+              { property: "og:image", content: shareImage },
+              { property: "og:image:alt", content: `${label} for sale in Dubai` },
+              { name: "twitter:image", content: shareImage },
+            ]
+          : []),
+        { property: "product:price:amount", content: String(car.price) },
+        { property: "product:price:currency", content: "AED" },
+        { property: "product:availability", content: car.sold ? "oos" : "in stock" },
       ],
-      links: [{ rel: "canonical", href: `/cars/${params.slug}` }],
+      links: [{ rel: "canonical", href: path }],
       scripts: [
         {
           type: "application/ld+json",
           children: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "Car",
+            url,
+            description,
+            ...(shareImage ? { image: [shareImage] } : {}),
+            itemCondition: "https://schema.org/UsedCondition",
+            numberOfDoors: car.bodyType === "Coupe" ? 2 : undefined,
+            vehicleEngine: { "@type": "EngineSpecification", name: car.engine },
             name: `${car.year} ${car.brand} ${car.model}`,
             brand: { "@type": "Brand", name: car.brand },
             vehicleModelDate: String(car.year),
