@@ -20,18 +20,6 @@ const brandIconMap: Record<string, string> = {
   tesla: "car-tesla",
 };
 
-const brandColorMap: Record<string, string> = {
-  "aston-martin": "#00665E",
-  bentley: "#1C1C1C",
-  bmw: "#0066B1",
-  ferrari: "#FF2800",
-  lamborghini: "#DDB05F",
-  "mercedes-benz": "#00ADEF",
-  porsche: "#B12B28",
-  "range-rover": "#005A2E",
-  "rolls-royce": "#1C1C1C",
-  tesla: "#E82127",
-};
 
 export const Route = createFileRoute("/")({
   head: () => ({ meta: [
