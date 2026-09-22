@@ -67,7 +67,33 @@ function CarDetail() {
   const { car } = Route.useLoaderData();
   const gallery = car.images?.length ? car.images : [car.image];
   const [active, setActive] = useState(0);
-  const heroImage = gallery[Math.min(active, gallery.length - 1)] ?? car.image;
+  const [lightbox, setLightbox] = useState(false);
+  const index = Math.min(active, gallery.length - 1);
+  const heroImage = gallery[index] ?? car.image;
+  const label = `${car.year} ${car.brand} ${car.model}`;
+
+  const go = useCallback(
+    (dir: number) => setActive((i) => (i + dir + gallery.length) % gallery.length),
+    [gallery.length],
+  );
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "ArrowRight") go(1);
+      else if (e.key === "ArrowLeft") go(-1);
+      else if (e.key === "Escape") setLightbox(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [go]);
+
+  useEffect(() => {
+    document.body.style.overflow = lightbox ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [lightbox]);
+
 
   const similar = cars
     .filter((c) => c.slug !== car.slug && (c.brandSlug === car.brandSlug || c.bodyType === car.bodyType))
