@@ -94,6 +94,10 @@ function CarDetail() {
     };
   }, [lightbox]);
 
+  const openAt = (i: number) => {
+    setActive(i);
+    setLightbox(true);
+  };
 
   const similar = cars
     .filter((c) => c.slug !== car.slug && (c.brandSlug === car.brandSlug || c.bodyType === car.bodyType))
@@ -101,215 +105,269 @@ function CarDetail() {
 
   const enquiry = `Hello, I am interested in the ${car.year} ${car.brand} ${car.model} (${formatPrice(car.price)}).`;
 
+  const feature = [gallery[1] ?? heroImage, gallery[2] ?? gallery[0] ?? heroImage];
+
+  const specs: [string, string][] = [
+    ["Year", String(car.year)],
+    ["Colour", car.exteriorColour],
+    ["Interior Trim", car.interiorColour],
+    ["Mileage", `${car.mileage.toLocaleString("en-US")} km`],
+    ["Body Style", car.bodyType],
+    ["Transmission", car.transmission],
+    ["Engine", car.engine],
+    ["Fuel Type", car.fuel],
+    ["Power", `${car.horsepower} bhp`],
+    ["0–100 km/h", `${car.accel}s`],
+  ];
+
   return (
-    <div className="mx-auto max-w-[1500px] px-5 pt-8 lg:px-10">
-      <nav className="engraved text-muted-foreground">
-        <Link to="/" className="hover:text-accent">
-          Home
-        </Link>
-        <span className="px-2">/</span>
-        <Link to="/inventory" search={{}} className="hover:text-accent">
-          Inventory
-        </Link>
-        <span className="px-2">/</span>
-        <span className="text-foreground">{car.model}</span>
-      </nav>
+    <div>
+      {/* Full-bleed hero slider */}
+      <section className="group relative bg-ink">
+        <img
+          src={heroImage}
+          alt={`${label} for sale in Dubai — photo ${index + 1} of ${gallery.length}`}
+          className="h-[52vw] max-h-[780px] min-h-[260px] w-full cursor-zoom-in object-cover"
+          onClick={() => setLightbox(true)}
+        />
 
-      <div className="mt-8 grid gap-12 lg:grid-cols-[1.55fr_1fr]">
-        <div className="min-w-0">
-          <div className="group relative bg-card">
-            <img
-              src={heroImage}
-              alt={`${label} for sale in Dubai — photo ${index + 1} of ${gallery.length}`}
-              className="aspect-[4/3] w-full cursor-zoom-in object-cover"
-              onClick={() => setLightbox(true)}
-            />
-
-            {gallery.length > 1 && (
-              <>
-                <button
-                  type="button"
-                  onClick={() => go(-1)}
-                  aria-label="Previous photo"
-                  className="absolute left-0 top-1/2 -translate-y-1/2 bg-ink/60 p-3 text-ink-foreground opacity-0 transition hover:bg-ink focus-visible:opacity-100 group-hover:opacity-100"
-                >
-                  <ChevronLeft className="size-5" />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => go(1)}
-                  aria-label="Next photo"
-                  className="absolute right-0 top-1/2 -translate-y-1/2 bg-ink/60 p-3 text-ink-foreground opacity-0 transition hover:bg-ink focus-visible:opacity-100 group-hover:opacity-100"
-                >
-                  <ChevronRight className="size-5" />
-                </button>
-              </>
-            )}
-
+        {gallery.length > 1 && (
+          <>
             <button
               type="button"
-              onClick={() => setLightbox(true)}
-              aria-label="View full screen"
-              className="engraved absolute bottom-0 right-0 flex items-center gap-2 bg-ink/75 px-3 py-2 text-ink-foreground transition hover:bg-ink"
+              onClick={() => go(-1)}
+              aria-label="Previous photo"
+              className="absolute left-0 top-1/2 -translate-y-1/2 bg-ink/50 p-4 text-ink-foreground transition hover:bg-ink lg:p-5"
             >
-              <Expand className="size-3.5" />
-              <span>
-                {index + 1} / {gallery.length}
-              </span>
+              <ChevronLeft className="size-6" />
             </button>
+            <button
+              type="button"
+              onClick={() => go(1)}
+              aria-label="Next photo"
+              className="absolute right-0 top-1/2 -translate-y-1/2 bg-ink/50 p-4 text-ink-foreground transition hover:bg-ink lg:p-5"
+            >
+              <ChevronRight className="size-6" />
+            </button>
+          </>
+        )}
+
+        <button
+          type="button"
+          onClick={() => setLightbox(true)}
+          aria-label="View full screen"
+          className="engraved absolute bottom-0 right-0 flex items-center gap-2 bg-ink/75 px-4 py-2.5 text-ink-foreground transition hover:bg-ink"
+        >
+          <Expand className="size-3.5" />
+          <span>
+            {index + 1} / {gallery.length}
+          </span>
+        </button>
+      </section>
+
+      <div className="mx-auto max-w-[1500px] px-5 lg:px-10">
+        {/* Title band */}
+        <header className="border-b border-hairline py-10 lg:py-14">
+          <nav className="engraved text-muted-foreground">
+            <Link to="/" className="hover:text-accent">
+              Home
+            </Link>
+            <span className="px-2">/</span>
+            <Link to="/inventory" search={{}} className="hover:text-accent">
+              Inventory
+            </Link>
+            <span className="px-2">/</span>
+            <span className="text-foreground">{car.model}</span>
+          </nav>
+
+          <div className="mt-8 flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+            <div>
+              <p className="engraved text-muted-foreground">
+                {car.brand} · {car.year}
+              </p>
+              <h1 className="mt-4 text-3xl leading-tight md:text-5xl">{car.model}</h1>
+            </div>
+            <div className="lg:text-right">
+              <p className="font-display text-2xl md:text-3xl">{formatPrice(car.price)}</p>
+              <p className="engraved mt-2 text-muted-foreground">
+                {car.sold ? "Sold" : "Available · Dubai Showroom"}
+              </p>
+            </div>
           </div>
 
-          {gallery.length > 1 && (
-            <div className="mt-3 flex gap-3 overflow-x-auto pb-2">
+          <div className="mt-10 flex flex-wrap gap-3">
+            <a href={whatsappLink(enquiry)} target="_blank" rel="noreferrer" className="btn-ink">
+              Enquire On WhatsApp
+            </a>
+            <a href={`tel:${PHONE.replace(/\s/g, "")}`} className="btn-outline-ink">
+              Call {PHONE}
+            </a>
+            <a
+              href={`mailto:${EMAIL}?subject=${encodeURIComponent(enquiry)}`}
+              className="btn-outline-ink"
+            >
+              Email Sales
+            </a>
+          </div>
+        </header>
+
+        {/* Large stacked feature images */}
+        <div className="space-y-5 py-12 lg:space-y-8 lg:py-16">
+          {feature.map((img, i) => (
+            <button
+              key={`${img}-${i}`}
+              type="button"
+              onClick={() => openAt(gallery.indexOf(img) === -1 ? 0 : gallery.indexOf(img))}
+              className="block w-full cursor-zoom-in"
+              aria-label={`View larger photo of ${label}`}
+            >
+              <img
+                src={img}
+                alt={`${label} — detail ${i + 1}`}
+                loading="lazy"
+                className="aspect-[16/9] w-full object-cover"
+              />
+            </button>
+          ))}
+        </div>
+
+        {/* Overview + spec table */}
+        <div className="grid gap-14 border-t border-hairline pt-12 lg:grid-cols-[1.4fr_1fr] lg:pt-16">
+          <div>
+            <h2 className="rule-accent text-2xl">Overview</h2>
+            <p className="mt-10 leading-relaxed text-muted-foreground">{car.description}</p>
+            <p className="mt-4 leading-relaxed text-muted-foreground">
+              Inspected and prepared by our own workshop, with full documentation and history
+              available on request. We arrange finance, registration and secure worldwide delivery,
+              and are happy to talk through specification in detail before you visit.
+            </p>
+          </div>
+
+          <div>
+            <h2 className="rule-accent text-2xl">Vehicle Details</h2>
+            <dl className="mt-10 border-t border-hairline">
+              {specs.map(([k, v]) => (
+                <div key={k} className="flex justify-between gap-6 border-b border-hairline py-3">
+                  <dt className="engraved text-muted-foreground">{k}</dt>
+                  <dd className="text-sm">{v}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </div>
+
+        {/* Specification list */}
+        <section className="mt-20 border-t border-hairline pt-12 lg:pt-16">
+          <h2 className="rule-accent text-2xl">Specification</h2>
+          <ul className="mt-12 grid gap-x-12 gap-y-0 sm:grid-cols-2 lg:grid-cols-3">
+            {car.features.map((f) => (
+              <li
+                key={f}
+                className="flex gap-3 border-b border-hairline py-3 text-sm text-muted-foreground"
+              >
+                <span aria-hidden="true" className="text-accent">
+                  +
+                </span>
+                <span>{f}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        {/* Full gallery */}
+        {gallery.length > 1 && (
+          <section className="mt-20 border-t border-hairline pt-12 lg:pt-16">
+            <h2 className="rule-accent text-2xl">Gallery</h2>
+            <div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5 lg:gap-4">
               {gallery.map((img, i) => (
                 <button
-                  key={`${img}-${i}`}
+                  key={`${img}-thumb-${i}`}
                   type="button"
-                  onClick={() => setActive(i)}
-                  aria-label={`View photo ${i + 1}`}
-                  aria-current={i === index}
-                  className={`w-[110px] shrink-0 border transition sm:w-[130px] ${
-                    i === index
-                      ? "border-accent"
-                      : "border-hairline opacity-60 hover:opacity-100"
+                  onClick={() => openAt(i)}
+                  aria-label={`View photo ${i + 1} of ${gallery.length}`}
+                  className={`border transition ${
+                    i === index ? "border-accent" : "border-hairline hover:border-accent"
                   }`}
                 >
                   <img src={img} alt="" loading="lazy" className="aspect-[4/3] w-full object-cover" />
                 </button>
               ))}
             </div>
-          )}
+          </section>
+        )}
 
-          {lightbox && (
-            <div
-              className="fixed inset-0 z-50 flex flex-col bg-ink/97"
-              role="dialog"
-              aria-modal="true"
-              aria-label={`${label} photo gallery`}
+        {/* Selling your car */}
+        <section className="mt-20 flex flex-col gap-8 bg-ink px-6 py-12 text-ink-foreground lg:flex-row lg:items-center lg:justify-between lg:px-12">
+          <div className="max-w-2xl">
+            <h2 className="text-2xl">Selling Your Car</h2>
+            <p className="mt-4 text-sm leading-relaxed text-ink-foreground/70">
+              If you have a luxury vehicle you would like us to consider in part exchange against
+              this car, or an outright sale, our team will give you a considered valuation the same
+              day.
+            </p>
+          </div>
+          <Link to="/sell" className="btn-light self-start whitespace-nowrap">
+            Request A Valuation
+          </Link>
+        </section>
+
+        {similar.length > 0 && (
+          <section className="mt-20 pb-4">
+            <h2 className="rule-accent text-2xl">You May Also Consider</h2>
+            <div className="mt-14 grid grid-cols-1 gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
+              {similar.map((c) => (
+                <CarCard key={c.slug} car={c} />
+              ))}
+            </div>
+          </section>
+        )}
+      </div>
+
+      {lightbox && (
+        <div
+          className="fixed inset-0 z-50 flex flex-col bg-ink/97"
+          role="dialog"
+          aria-modal="true"
+          aria-label={`${label} photo gallery`}
+        >
+          <div className="flex items-center justify-between px-5 py-4 lg:px-10">
+            <p className="engraved text-ink-foreground">
+              {label} · {index + 1} / {gallery.length}
+            </p>
+            <button
+              type="button"
+              onClick={() => setLightbox(false)}
+              aria-label="Close gallery"
+              className="p-2 text-ink-foreground transition hover:text-accent"
             >
-              <div className="flex items-center justify-between px-5 py-4 lg:px-10">
-                <p className="engraved text-ink-foreground">
-                  {label} · {index + 1} / {gallery.length}
-                </p>
+              <X className="size-6" />
+            </button>
+          </div>
+
+          <div className="relative flex flex-1 items-center justify-center overflow-hidden px-4 pb-6">
+            <img src={heroImage} alt="" className="max-h-full max-w-full object-contain" />
+            {gallery.length > 1 && (
+              <>
                 <button
                   type="button"
-                  onClick={() => setLightbox(false)}
-                  aria-label="Close gallery"
-                  className="p-2 text-ink-foreground transition hover:text-accent"
+                  onClick={() => go(-1)}
+                  aria-label="Previous photo"
+                  className="absolute left-2 top-1/2 -translate-y-1/2 bg-ink/60 p-3 text-ink-foreground transition hover:bg-ink lg:left-6"
                 >
-                  <X className="size-6" />
+                  <ChevronLeft className="size-6" />
                 </button>
-              </div>
-
-              <div className="relative flex flex-1 items-center justify-center overflow-hidden px-4 pb-6">
-                <img src={heroImage} alt="" className="max-h-full max-w-full object-contain" />
-                {gallery.length > 1 && (
-                  <>
-                    <button
-                      type="button"
-                      onClick={() => go(-1)}
-                      aria-label="Previous photo"
-                      className="absolute left-2 top-1/2 -translate-y-1/2 bg-ink/60 p-3 text-ink-foreground transition hover:bg-ink lg:left-6"
-                    >
-                      <ChevronLeft className="size-6" />
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => go(1)}
-                      aria-label="Next photo"
-                      className="absolute right-2 top-1/2 -translate-y-1/2 bg-ink/60 p-3 text-ink-foreground transition hover:bg-ink lg:right-6"
-                    >
-                      <ChevronRight className="size-6" />
-                    </button>
-                  </>
-                )}
-              </div>
-            </div>
-          )}
-        </div>
-
-
-        <div>
-          <p className="engraved text-muted-foreground">
-            {car.brand} · {car.year}
-          </p>
-          <h1 className="mt-4 text-3xl leading-tight md:text-4xl">{car.model}</h1>
-          <p className="mt-8 font-display text-2xl">{formatPrice(car.price)}</p>
-          <p className="mt-2 text-sm text-muted-foreground">
-            {car.sold ? "This vehicle has been sold" : "Available now · Dubai showroom"}
-          </p>
-
-          <div className="mt-8 flex flex-wrap gap-3">
-            <a
-              href={whatsappLink(enquiry)}
-              target="_blank"
-              rel="noreferrer"
-              className="btn-ink"
-            >
-              Enquire On WhatsApp
-            </a>
-            <a href={`tel:${PHONE.replace(/\s/g, "")}`} className="btn-outline-ink">
-              Call {PHONE}
-            </a>
+                <button
+                  type="button"
+                  onClick={() => go(1)}
+                  aria-label="Next photo"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 bg-ink/60 p-3 text-ink-foreground transition hover:bg-ink lg:right-6"
+                >
+                  <ChevronRight className="size-6" />
+                </button>
+              </>
+            )}
           </div>
-
-          <dl className="mt-10 border-t border-hairline">
-            {[
-              ["Year", String(car.year)],
-              ["Mileage", `${car.mileage.toLocaleString("en-US")} km`],
-              ["Body Type", car.bodyType],
-              ["Fuel", car.fuel],
-              ["Transmission", car.transmission],
-              ["Exterior", car.exteriorColour],
-              ["Interior", car.interiorColour],
-              ["Engine", car.engine],
-              ["Power", `${car.horsepower} bhp`],
-              ["0–100 km/h", `${car.accel}s`],
-            ].map(([label, value]) => (
-              <div key={label} className="flex justify-between gap-6 border-b border-hairline py-3">
-                <dt className="engraved text-muted-foreground">{label}</dt>
-                <dd className="text-sm">{value}</dd>
-              </div>
-            ))}
-          </dl>
-
-          <a href={`mailto:${EMAIL}?subject=${encodeURIComponent(enquiry)}`} className="engraved mt-8 inline-block border-b border-accent pb-1">
-            Email Our Sales Team
-          </a>
         </div>
-      </div>
-
-      <div className="mt-20 grid gap-12 border-t border-hairline pt-14 lg:grid-cols-[1.55fr_1fr]">
-        <div>
-          <h2 className="rule-accent text-2xl">Description</h2>
-          <p className="mt-10 leading-relaxed text-muted-foreground">{car.description}</p>
-          <p className="mt-4 leading-relaxed text-muted-foreground">
-            Inspected and prepared by our own workshop, with full documentation and history
-            available on request. We arrange finance, registration and secure worldwide delivery,
-            and are happy to talk through specification in detail before you visit.
-          </p>
-        </div>
-        <div>
-          <h2 className="rule-accent text-2xl">Specification Highlights</h2>
-          <ul className="mt-10 space-y-3">
-            {car.features.map((f) => (
-              <li key={f} className="border-b border-hairline pb-3 text-sm text-muted-foreground">
-                {f}
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-
-      {similar.length > 0 && (
-        <section className="mt-24">
-          <h2 className="rule-accent text-2xl">You May Also Consider</h2>
-          <div className="mt-14 grid grid-cols-1 gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
-            {similar.map((c) => (
-              <CarCard key={c.slug} car={c} />
-            ))}
-          </div>
-        </section>
       )}
     </div>
   );
