@@ -20,6 +20,19 @@ const brandIconMap: Record<string, string> = {
   tesla: "car-tesla",
 };
 
+const brandColorMap: Record<string, string> = {
+  "aston-martin": "#00665E",
+  bentley: "#1C1C1C",
+  bmw: "#0066B1",
+  ferrari: "#FF2800",
+  lamborghini: "#DDB05F",
+  "mercedes-benz": "#00ADEF",
+  porsche: "#B12B28",
+  "range-rover": "#005A2E",
+  "rolls-royce": "#1C1C1C",
+  tesla: "#E82127",
+};
+
 export const Route = createFileRoute("/")({
   head: () => ({ meta: [
     { title: "Luxury Car Gallery — Luxury, Performance & Classic Cars In Dubai" },
@@ -55,7 +68,7 @@ function Home() {
       </div>
     </section>
 
-    <section className="overflow-hidden py-16 lg:py-20"><div className="mx-auto max-w-[1600px] px-5 lg:px-10"><p className="engraved text-muted-foreground">The world's finest marques</p></div><div className="mt-9 overflow-hidden border-y border-border py-7"><div className="marquee-track items-center">{[...brands, ...brands].map((brand, index) => <Link key={`${brand.slug}-${index}`} to="/inventory" search={{ make: brand.slug }} className="group flex items-center gap-3 px-7 text-foreground/65 transition-colors hover:text-accent sm:px-10"><i className={`${brandIconMap[brand.slug]} text-3xl leading-none`} aria-hidden="true" /><span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground transition-colors group-hover:text-accent">{brand.name}</span></Link>)}</div></div></section>
+    <section className="overflow-hidden py-16 lg:py-20"><div className="mx-auto max-w-[1600px] px-5 lg:px-10"><p className="engraved text-muted-foreground">The world's finest marques</p></div><div className="mt-9 overflow-hidden border-y border-border py-7"><div className="marquee-track items-center">{[...brands, ...brands].map((brand, index) => <Link key={`${brand.slug}-${index}`} to="/inventory" search={{ make: brand.slug }} className="group flex items-center gap-3 px-7 transition-colors sm:px-10"><i className={`${brandIconMap[brand.slug]} text-3xl leading-none text-foreground/65 transition-colors group-hover:text-[var(--brand-color)]`} style={{ ["--brand-color" as any]: brandColorMap[brand.slug] }} aria-hidden="true" /><span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground transition-colors group-hover:text-foreground">{brand.name}</span></Link>)}</div></div></section>
 
     <section className="mx-auto max-w-[1600px] px-5 py-10 lg:px-10 lg:py-20"><div className="flex items-end justify-between gap-8"><div><p className="engraved text-muted-foreground">Available now</p><h2 className="mt-4 text-3xl font-medium uppercase sm:text-5xl">The collection</h2></div><Link to="/inventory" search={{}} className="hidden items-center gap-2 text-xs font-semibold uppercase sm:flex">View all <ArrowRight className="size-4" /></Link></div><div className="mt-12 grid gap-x-6 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">{featured.map((car) => <CarCard key={car.slug} car={car} />)}</div><Link to="/inventory" search={{}} className="btn-outline-ink mt-12 sm:hidden">View all cars</Link></section>
 
