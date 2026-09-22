@@ -14,16 +14,227 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      cars: {
+        Row: {
+          body_type: string
+          brand: string
+          brand_slug: string
+          created_at: string
+          description: string
+          exterior_colour: string
+          featured: boolean
+          fuel: string
+          gallery_slug: string | null
+          id: string
+          image_urls: string[]
+          interior_colour: string
+          mileage: number
+          model: string
+          price: number
+          published: boolean
+          slug: string
+          sold: boolean
+          sort_order: number
+          title: string
+          transmission: string
+          updated_at: string
+          year: number
+        }
+        Insert: {
+          body_type?: string
+          brand: string
+          brand_slug: string
+          created_at?: string
+          description?: string
+          exterior_colour?: string
+          featured?: boolean
+          fuel?: string
+          gallery_slug?: string | null
+          id?: string
+          image_urls?: string[]
+          interior_colour?: string
+          mileage?: number
+          model?: string
+          price?: number
+          published?: boolean
+          slug: string
+          sold?: boolean
+          sort_order?: number
+          title: string
+          transmission?: string
+          updated_at?: string
+          year: number
+        }
+        Update: {
+          body_type?: string
+          brand?: string
+          brand_slug?: string
+          created_at?: string
+          description?: string
+          exterior_colour?: string
+          featured?: boolean
+          fuel?: string
+          gallery_slug?: string | null
+          id?: string
+          image_urls?: string[]
+          interior_colour?: string
+          mileage?: number
+          model?: string
+          price?: number
+          published?: boolean
+          slug?: string
+          sold?: boolean
+          sort_order?: number
+          title?: string
+          transmission?: string
+          updated_at?: string
+          year?: number
+        }
+        Relationships: []
+      }
+      enquiries: {
+        Row: {
+          car_slug: string | null
+          car_title: string | null
+          created_at: string
+          email: string | null
+          id: string
+          message: string
+          name: string
+          phone: string | null
+          source: string
+          status: string
+        }
+        Insert: {
+          car_slug?: string | null
+          car_title?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          message?: string
+          name: string
+          phone?: string | null
+          source?: string
+          status?: string
+        }
+        Update: {
+          car_slug?: string | null
+          car_title?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          message?: string
+          name?: string
+          phone?: string | null
+          source?: string
+          status?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          email: string | null
+          full_name: string | null
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id: string
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+        }
+        Relationships: []
+      }
+      sell_submissions: {
+        Row: {
+          brand: string | null
+          created_at: string
+          email: string | null
+          id: string
+          mileage: number | null
+          model: string | null
+          name: string
+          notes: string
+          phone: string
+          price_expectation: number | null
+          status: string
+          year: number | null
+        }
+        Insert: {
+          brand?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          mileage?: number | null
+          model?: string | null
+          name: string
+          notes?: string
+          phone?: string
+          price_expectation?: number | null
+          status?: string
+          year?: number | null
+        }
+        Update: {
+          brand?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          mileage?: number | null
+          model?: string | null
+          name?: string
+          notes?: string
+          phone?: string
+          price_expectation?: number | null
+          status?: string
+          year?: number | null
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      ensure_profile: { Args: never; Returns: boolean }
+      grant_admin_by_email: { Args: { _email: string }; Returns: boolean }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +361,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin"],
+    },
   },
 } as const
