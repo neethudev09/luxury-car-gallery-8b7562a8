@@ -75,12 +75,43 @@ export const Route = createFileRoute("/cars/$slug")({
             },
             offers: {
               "@type": "Offer",
+              url,
               price: car.price,
               priceCurrency: "AED",
+              itemCondition: "https://schema.org/UsedCondition",
               availability: car.sold
                 ? "https://schema.org/SoldOut"
                 : "https://schema.org/InStock",
+              seller: {
+                "@type": "AutoDealer",
+                name: "Luxury Car Gallery",
+                telephone: PHONE,
+                email: EMAIL,
+                address: {
+                  "@type": "PostalAddress",
+                  streetAddress: "Al Quoz",
+                  addressLocality: "Dubai",
+                  addressCountry: "AE",
+                },
+              },
             },
+          }),
+        },
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "Home", item: origin || "/" },
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: "Inventory",
+                item: origin ? `${origin}/inventory` : "/inventory",
+              },
+              { "@type": "ListItem", position: 3, name: label, item: url },
+            ],
           }),
         },
       ],
