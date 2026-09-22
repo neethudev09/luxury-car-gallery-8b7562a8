@@ -4,19 +4,13 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/*
- * Luxury Car Gallery design system.
- * Classic showroom language: ink-black chrome, paper-white canvas,
- * engraved serif display type, brass hairlines.
- */
-
 @theme inline {
-  --radius-sm: 0px;
-  --radius-md: 0px;
-  --radius-lg: 0px;
-  --radius-xl: 0px;
-  --font-display: "Cinzel", "Times New Roman", serif;
-  --font-sans: "Jost", system-ui, sans-serif;
+  --radius-sm: 999px;
+  --radius-md: 999px;
+  --radius-lg: 999px;
+  --radius-xl: 999px;
+  --font-display: "Sora", system-ui, sans-serif;
+  --font-sans: "Sora", system-ui, sans-serif;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -38,57 +32,53 @@
 }
 
 :root {
-  --radius: 0px;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.18 0.004 250);
-  --card: oklch(0.985 0.002 250);
-  --card-foreground: oklch(0.18 0.004 250);
-  --primary: oklch(0.16 0.004 250);
+  --radius: 999px;
+  --background: oklch(0.985 0.002 260);
+  --foreground: oklch(0.11 0.008 260);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.11 0.008 260);
+  --primary: oklch(0.11 0.008 260);
   --primary-foreground: oklch(0.99 0 0);
-  --secondary: oklch(0.96 0.002 250);
-  --secondary-foreground: oklch(0.2 0.004 250);
-  --muted: oklch(0.965 0.002 250);
-  --muted-foreground: oklch(0.52 0.006 250);
-  --accent: oklch(0.63 0.075 78);
-  --accent-foreground: oklch(0.16 0.004 250);
-  --ink: oklch(0.13 0.004 250);
-  --ink-foreground: oklch(0.97 0 0);
-  --border: oklch(0.9 0.003 250);
-  --hairline: oklch(0.86 0.004 250);
-  --input: oklch(0.9 0.003 250);
-  --ring: oklch(0.63 0.075 78);
+  --secondary: oklch(0.93 0.003 260);
+  --secondary-foreground: oklch(0.16 0.006 260);
+  --muted: oklch(0.94 0.003 260);
+  --muted-foreground: oklch(0.46 0.008 260);
+  --accent: oklch(0.59 0.22 27);
+  --accent-foreground: oklch(0.99 0 0);
+  --ink: oklch(0.075 0.008 260);
+  --ink-foreground: oklch(0.98 0.002 260);
+  --border: oklch(0.87 0.004 260);
+  --hairline: oklch(0.82 0.005 260);
+  --input: oklch(0.88 0.004 260);
+  --ring: oklch(0.59 0.22 27);
 }
 
 @layer base {
-  * {
-    border-color: var(--color-border);
-  }
-
+  * { border-color: var(--color-border); }
+  html { scroll-behavior: smooth; }
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
-    font-weight: 300;
+    font-weight: 400;
+    letter-spacing: 0;
     -webkit-font-smoothing: antialiased;
   }
-
-  h1,
-  h2,
-  h3,
-  h4 {
+  h1, h2, h3, h4 {
     font-family: var(--font-display);
-    font-weight: 400;
-    letter-spacing: 0.02em;
+    font-weight: 500;
+    letter-spacing: 0;
   }
+  button, a, input, select, textarea { letter-spacing: 0; }
 }
 
-/* Small-caps engraved label used above headings and on buttons */
 @utility engraved {
-  font-family: var(--font-display);
+  font-family: var(--font-sans);
   text-transform: uppercase;
-  letter-spacing: 0.22em;
-  font-size: 0.7rem;
-  line-height: 1;
+  letter-spacing: 0.18em;
+  font-size: 0.64rem;
+  font-weight: 500;
+  line-height: 1.2;
 }
 
 @utility rule-accent {
@@ -97,98 +87,83 @@
     content: "";
     position: absolute;
     left: 0;
-    bottom: -0.75rem;
-    width: 3.5rem;
-    height: 1px;
+    bottom: -0.9rem;
+    width: 2.75rem;
+    height: 2px;
     background: var(--color-accent);
   }
 }
 
 @utility btn-ink {
   display: inline-flex;
+  min-height: 3.25rem;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 0.65rem;
+  border-radius: 999px;
   background: var(--color-ink);
   color: var(--color-ink-foreground);
-  padding: 0.95rem 2rem;
-  font-family: var(--font-display);
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
+  padding: 0.9rem 1.65rem;
   font-size: 0.7rem;
-  transition:
-    background 0.25s ease,
-    color 0.25s ease;
-  &:hover {
-    background: var(--color-accent);
-    color: var(--color-accent-foreground);
-  }
+  font-weight: 600;
+  text-transform: uppercase;
+  transition: background 0.25s ease, transform 0.25s ease;
+  &:hover { background: var(--color-accent); transform: translateY(-1px); }
 }
 
 @utility btn-outline-ink {
   display: inline-flex;
+  min-height: 3.25rem;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 0.65rem;
   border: 1px solid var(--color-hairline);
+  border-radius: 999px;
   color: var(--color-foreground);
-  padding: 0.95rem 2rem;
-  font-family: var(--font-display);
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
+  padding: 0.9rem 1.65rem;
   font-size: 0.7rem;
-  transition:
-    border-color 0.25s ease,
-    color 0.25s ease;
-  &:hover {
-    border-color: var(--color-ink);
-  }
-}
-
-@utility btn-ghost-light {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  border: 1px solid oklch(1 0 0 / 45%);
-  color: oklch(1 0 0);
-  padding: 0.95rem 2rem;
-  font-family: var(--font-display);
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.18em;
-  font-size: 0.7rem;
-  transition:
-    background 0.25s ease,
-    color 0.25s ease;
-  &:hover {
-    background: oklch(1 0 0);
-    color: var(--color-ink);
-  }
+  transition: border-color 0.25s ease, background 0.25s ease;
+  &:hover { border-color: var(--color-ink); background: var(--color-card); }
 }
 
 @utility btn-light {
   display: inline-flex;
+  min-height: 3.25rem;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 0.65rem;
+  border-radius: 999px;
   background: var(--color-ink-foreground);
   color: var(--color-ink);
-  padding: 0.95rem 2rem;
-  font-family: var(--font-display);
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
+  padding: 0.9rem 1.65rem;
   font-size: 0.7rem;
-  transition:
-    background 0.25s ease,
-    color 0.25s ease;
-  &:hover {
-    background: var(--color-accent);
-    color: var(--color-accent-foreground);
-  }
+  font-weight: 600;
+  text-transform: uppercase;
+  transition: background 0.25s ease, transform 0.25s ease;
+  &:hover { background: var(--color-accent); color: var(--color-accent-foreground); transform: translateY(-1px); }
+}
+
+@utility btn-ghost-light {
+  display: inline-flex;
+  min-height: 3.25rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  border: 1px solid color-mix(in oklab, var(--color-ink-foreground) 45%, transparent);
+  border-radius: 999px;
+  color: var(--color-ink-foreground);
+  padding: 0.9rem 1.65rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  transition: background 0.25s ease, color 0.25s ease;
+  &:hover { background: var(--color-ink-foreground); color: var(--color-ink); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  video {
-    display: none;
-  }
+  html { scroll-behavior: auto; }
+  video { display: none; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }
