@@ -85,3 +85,61 @@ function ContactPage() {
     </>
   );
 }
+
+function EnquiryForm() {
+  const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
+  const [busy, setBusy] = useState(false);
+  const [sent, setSent] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function submit(e: React.FormEvent) {
+    e.preventDefault();
+    setBusy(true);
+    setError(null);
+    const { error: err } = await supabase.from("enquiries").insert({
+      name: form.name,
+      email: form.email || null,
+      phone: form.phone || null,
+      message: form.message,
+      source: "contact",
+    });
+    setBusy(false);
+    if (err) setError("We could not send your message. Please call or WhatsApp us instead.");
+    else {
+      setSent(true);
+      setForm({ name: "", email: "", phone: "", message: "" });
+    }
+  }
+
+  const field = "mt-3 w-full border border-hairline bg-background px-4 py-3 text-sm outline-none focus:border-accent";
+
+  return (
+    <form onSubmit={submit} className="mt-16 max-w-3xl bg-card p-7 shadow-[0_24px_70px_-50px_var(--color-ink)] sm:p-10">
+      <p className="engraved text-muted-foreground">Send a message</p>
+      <h2 className="mt-4 text-2xl font-medium uppercase">Make an enquiry</h2>
+      <div className="mt-8 grid gap-6 sm:grid-cols-2">
+        <label className="block">
+          <span className="engraved text-muted-foreground">Your Name</span>
+          <input required value={form.name} onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))} placeholder="Full name" className={field} />
+        </label>
+        <label className="block">
+          <span className="engraved text-muted-foreground">Phone</span>
+          <input type="tel" value={form.phone} onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))} placeholder="+971 …" className={field} />
+        </label>
+        <label className="block sm:col-span-2">
+          <span className="engraved text-muted-foreground">Email</span>
+          <input type="email" value={form.email} onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))} placeholder="you@example.com" className={field} />
+        </label>
+        <label className="block sm:col-span-2">
+          <span className="engraved text-muted-foreground">Message</span>
+          <textarea required rows={5} value={form.message} onChange={(e) => setForm((f) => ({ ...f, message: e.target.value }))} placeholder="Tell us which car you are interested in." className={field} />
+        </label>
+      </div>
+      <button type="submit" disabled={busy} className="btn-ink mt-8 w-full justify-center">
+        {busy ? "Sending…" : "Send Enquiry"}
+      </button>
+      {sent ? <p className="mt-4 text-sm text-muted-foreground">Thank you — we have your enquiry and will reply today.</p> : null}
+      {error ? <p className="mt-4 text-sm text-accent">{error}</p> : null}
+    </form>
+  );
+}
