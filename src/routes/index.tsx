@@ -117,43 +117,42 @@ function Home() {
       </section>
 
       <section className="mx-auto max-w-[1500px] px-5 py-20 lg:px-10">
-        <div className="flex flex-col gap-4 border-b border-hairline pb-8 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <p className="engraved text-accent">Shop By Marque</p>
-            <h2 className="mt-2 text-2xl md:text-3xl">Available Inventory</h2>
+        <div className="mb-16 text-center">
+          <p className="engraved text-accent">Available Inventory</p>
+          <h2 className="mt-3 text-3xl uppercase tracking-tight md:text-4xl">Shop By Marque</h2>
+        </div>
+
+        <div className="border-y border-hairline">
+          <div className="grid grid-cols-2 md:grid-cols-5">
+            {brands.map((b) => {
+              const count = counts[b.slug] ?? 0;
+              return (
+                <Link
+                  key={b.slug}
+                  to="/inventory"
+                  search={{ make: b.slug }}
+                  className="group relative flex flex-col items-center justify-center border-r border-b border-hairline py-12 px-6 transition-colors duration-500 hover:bg-ink hover:text-ink-foreground [&:nth-child(2n)]:border-r-0 md:[&:nth-child(2n)]:border-r md:[&:nth-child(5n)]:border-r-0 [&:nth-last-child(-n+2)]:border-b-0 md:[&:nth-last-child(-n+5)]:border-b-0"
+                >
+                  <span className="text-center font-display text-base uppercase tracking-[0.14em] transition-colors group-hover:text-ink-foreground md:text-lg">
+                    {b.name}
+                  </span>
+                  <span className="mt-2 font-sans text-[10px] uppercase tracking-[0.2em] text-accent">
+                    {count} Available
+                  </span>
+                </Link>
+              );
+            })}
           </div>
+        </div>
+
+        <div className="mt-12 text-center">
           <Link
             to="/inventory"
             search={{}}
-            className="engraved inline-flex items-center gap-2 self-start border-b border-accent pb-1 transition-colors hover:text-accent sm:self-auto"
+            className="engraved inline-block border-b border-foreground pb-1 text-[11px] uppercase tracking-[0.3em] transition-colors hover:border-accent hover:text-accent"
           >
-            All Vehicles
-            <span className="text-ink-foreground/40">({available})</span>
+            View Full Collection
           </Link>
-        </div>
-
-        <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-          {brands.map((b) => {
-            const count = counts[b.slug] ?? 0;
-            return (
-              <Link
-                key={b.slug}
-                to="/inventory"
-                search={{ make: b.slug }}
-                className="group flex items-center justify-between border border-hairline bg-background p-5 transition-all duration-300 hover:border-accent hover:bg-ink hover:text-ink-foreground"
-              >
-                <span className="font-display text-base uppercase tracking-[0.12em] transition-colors group-hover:text-accent sm:text-lg">
-                  {b.name}
-                </span>
-                <div className="text-right">
-                  <span className="block font-display text-xl font-normal leading-none sm:text-2xl">{count}</span>
-                  <span className="engraved block text-[10px] uppercase tracking-[0.18em] text-muted-foreground group-hover:text-ink-foreground/60">
-                    Available
-                  </span>
-                </div>
-              </Link>
-            );
-          })}
         </div>
 
         <div className="mt-16 grid grid-cols-1 gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
