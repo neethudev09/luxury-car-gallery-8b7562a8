@@ -116,7 +116,7 @@ function CarDetail() {
       </nav>
 
       <div className="mt-8 grid gap-12 lg:grid-cols-[1.55fr_1fr]">
-        <div>
+        <div className="min-w-0">
           <div className="group relative bg-card">
             <img
               src={heroImage}
