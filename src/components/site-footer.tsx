@@ -18,7 +18,7 @@ export function SiteFooter() {
           <div><p className="engraved text-ink-foreground/35">Marques</p><div className="mt-5 grid grid-cols-2 gap-x-5 gap-y-3 text-sm">{brands.slice(0, 10).map((brand) => <Link key={brand.slug} to="/inventory" search={{ make: brand.slug }} className="text-ink-foreground/70 hover:text-ink-foreground">{brand.name}</Link>)}</div></div>
           <div><p className="engraved text-ink-foreground/35">Contact</p><div className="mt-5 space-y-3 text-sm text-ink-foreground/70"><a href={`tel:${PHONE.replace(/\s/g, "")}`} className="block hover:text-ink-foreground">{PHONE}</a><a href={`mailto:${EMAIL}`} className="block break-words hover:text-ink-foreground">{EMAIL}</a><p>Al Quoz, Dubai<br />United Arab Emirates</p></div></div>
         </div>
-        <div className="flex flex-col gap-3 border-t border-ink-foreground/10 pt-6 text-[10px] uppercase text-ink-foreground/35 sm:flex-row sm:justify-between"><p>© {new Date().getFullYear()} Luxury Car Gallery</p><p>Prices in AED · Availability subject to change</p></div>
+        <div className="flex flex-col gap-3 border-t border-ink-foreground/10 pt-6 text-[10px] uppercase text-ink-foreground/35 sm:flex-row sm:justify-between"><p>© {new Date().getFullYear()} Luxury Car Gallery</p><p>Prices in AED · Availability subject to change</p><Link to="/auth" className="hover:text-ink-foreground">Team login</Link></div>
       </div>
     </footer>
   );
