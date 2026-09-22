@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
 import { PHONE, EMAIL, whatsappLink } from "@/data/cars";
+import { supabase } from "@/integrations/supabase/client";
 import showroomInterior from "@/assets/showroom-interior.jpg";
 
 export const Route = createFileRoute("/contact")({
