@@ -151,18 +151,11 @@ function CarDetail() {
     };
   }, [lightbox]);
 
-  const openAt = (i: number) => {
-    setActive(i);
-    setLightbox(true);
-  };
-
   const similar = cars
     .filter((c) => c.slug !== car.slug && (c.brandSlug === car.brandSlug || c.bodyType === car.bodyType))
     .slice(0, 3);
 
   const enquiry = `Hello, I am interested in the ${car.year} ${car.brand} ${car.model} (${formatPrice(car.price)}).`;
-
-  const feature = [gallery[1] ?? heroImage, gallery[2] ?? gallery[0] ?? heroImage];
 
   const specs: [string, string][] = [
     ["Year", String(car.year)],
@@ -331,28 +324,6 @@ function CarDetail() {
             ))}
           </ul>
         </section>
-
-        {/* Full gallery */}
-        {gallery.length > 1 && (
-          <section className="mt-20 border-t border-hairline pt-12 lg:pt-16">
-            <h2 className="rule-accent text-2xl">Gallery</h2>
-            <div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5 lg:gap-4">
-              {gallery.map((img, i) => (
-                <button
-                  key={`${img}-thumb-${i}`}
-                  type="button"
-                  onClick={() => openAt(i)}
-                  aria-label={`View photo ${i + 1} of ${gallery.length}`}
-                  className={`border transition ${
-                    i === index ? "border-accent" : "border-hairline hover:border-accent"
-                  }`}
-                >
-                  <img src={img} alt="" loading="lazy" className="aspect-[4/3] w-full object-cover" />
-                </button>
-              ))}
-            </div>
-          </section>
-        )}
 
         {/* Selling your car */}
         <section className="mt-20 flex flex-col gap-8 bg-ink px-6 py-12 text-ink-foreground lg:flex-row lg:items-center lg:justify-between lg:px-12">
