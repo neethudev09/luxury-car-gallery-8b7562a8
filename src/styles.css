@@ -43,14 +43,14 @@
   --secondary-foreground: oklch(0.16 0.006 260);
   --muted: oklch(0.94 0.003 260);
   --muted-foreground: oklch(0.46 0.008 260);
-  --accent: oklch(0.59 0.22 27);
-  --accent-foreground: oklch(0.99 0 0);
+  --accent: oklch(0.72 0.11 85);
+  --accent-foreground: oklch(0.075 0.008 260);
   --ink: oklch(0.075 0.008 260);
   --ink-foreground: oklch(0.98 0.002 260);
   --border: oklch(0.87 0.004 260);
   --hairline: oklch(0.82 0.005 260);
   --input: oklch(0.88 0.004 260);
-  --ring: oklch(0.59 0.22 27);
+  --ring: oklch(0.72 0.11 85);
 }
 
 @layer base {
@@ -107,8 +107,8 @@
   font-size: 0.7rem;
   font-weight: 600;
   text-transform: uppercase;
-  transition: background 0.25s ease, transform 0.25s ease;
-  &:hover { background: var(--color-accent); transform: translateY(-1px); }
+  transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease;
+  &:hover { background: var(--color-accent); color: var(--color-accent-foreground); transform: translateY(-1px); }
 }
 
 @utility btn-outline-ink {
