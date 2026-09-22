@@ -117,27 +117,47 @@ function Home() {
       </section>
 
       <section className="mx-auto max-w-[1500px] px-5 py-20 lg:px-10">
-        <div className="flex flex-wrap items-end justify-between gap-6 border-b border-hairline pb-6">
-          <h2 className="text-2xl">Available Inventory</h2>
-          <Link to="/inventory" search={{}} className="engraved border-b border-accent pb-1">
+        <div className="flex flex-col gap-4 border-b border-hairline pb-8 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="engraved text-accent">Shop By Marque</p>
+            <h2 className="mt-2 text-2xl md:text-3xl">Available Inventory</h2>
+          </div>
+          <Link
+            to="/inventory"
+            search={{}}
+            className="engraved inline-flex items-center gap-2 self-start border-b border-accent pb-1 transition-colors hover:text-accent sm:self-auto"
+          >
             All Vehicles
+            <span className="text-ink-foreground/40">({available})</span>
           </Link>
         </div>
 
-        <div className="mt-8 flex flex-wrap gap-x-8 gap-y-3">
-          {brands.map((b) => (
-            <Link
-              key={b.slug}
-              to="/inventory"
-              search={{ make: b.slug }}
-              className="engraved text-muted-foreground transition-colors hover:text-accent"
-            >
-              {b.name} ({counts[b.slug] ?? 0})
-            </Link>
-          ))}
+        <div className="mt-10 grid grid-cols-1 gap-px bg-hairline sm:grid-cols-2 lg:grid-cols-4">
+          {brands.map((b) => {
+            const count = counts[b.slug] ?? 0;
+            return (
+              <Link
+                key={b.slug}
+                to="/inventory"
+                search={{ make: b.slug }}
+                className="group relative flex items-center justify-between bg-canvas p-6 transition-colors hover:bg-ink hover:text-ink-foreground"
+              >
+                <span className="font-display text-lg uppercase tracking-[0.12em] transition-colors group-hover:text-accent">
+                  {b.name}
+                </span>
+                <div className="text-right">
+                  <span className="block font-display text-2xl font-normal leading-none">{count}</span>
+                  <span className="engraved block text-[10px] uppercase tracking-[0.18em] text-muted-foreground group-hover:text-ink-foreground/60">
+                    Available
+                  </span>
+                </div>
+                <span className="absolute inset-x-0 bottom-0 h-[2px] scale-x-0 bg-accent transition-transform duration-300 group-hover:scale-x-100" />
+              </Link>
+            );
+          })}
         </div>
 
-        <div className="mt-14 grid grid-cols-1 gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-16 grid grid-cols-1 gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
           {grid.map((car) => (
             <CarCard key={car.slug} car={car} />
           ))}
