@@ -71,11 +71,13 @@ function ContactPage() {
         </div>
       </div>
 
+      <EnquiryForm />
+
       <a
         href={whatsappLink("Hello, I would like to arrange a viewing.")}
         target="_blank"
         rel="noreferrer"
-        className="btn-ink mt-14"
+        className="btn-outline-ink mt-6"
       >
         Message Us On WhatsApp
       </a>
