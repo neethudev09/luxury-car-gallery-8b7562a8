@@ -58,6 +58,11 @@ function Home() {
   return (
     <>
       <section className="relative h-[calc(100svh-5rem)] min-h-[560px] max-h-[920px] overflow-hidden lg:h-[calc(100svh-6rem)]">
+        <img
+          src={heroShowroom}
+          alt="Luxury and classic cars inside the Luxury Car Gallery showroom in Dubai"
+          className="absolute inset-0 h-full w-full object-cover"
+        />
         <video
           className="absolute inset-0 h-full w-full object-cover"
           autoPlay
@@ -66,7 +71,7 @@ function Home() {
           playsInline
           preload="metadata"
           poster={heroShowroom}
-          aria-label="Luxury cars at the Luxury Car Gallery showroom in Dubai"
+          aria-hidden="true"
         >
           <source src={heroVideoAsset.url} type="video/mp4" />
         </video>
