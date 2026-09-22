@@ -205,7 +205,7 @@ const carGalleries: Record<string, string[]> = {};
   for (const [path, url] of Object.entries(galleryModules)) {
     const m = path.match(/cars\/([^/]+)\/(\d+)\.webp$/);
     if (!m) continue;
-    (buckets[m[1]] ??= []).push({ n: parseInt(m[2], 10), url });
+    (buckets[m[1]!] ??= []).push({ n: parseInt(m[2]!, 10), url });
   }
   for (const [slug, arr] of Object.entries(buckets)) {
     carGalleries[slug] = arr.sort((a, b) => a.n - b.n).map((x) => x.url);
