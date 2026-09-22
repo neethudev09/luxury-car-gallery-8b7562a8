@@ -1,7 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { CarCard } from "@/components/car-card";
-import { brands, cars, bodyTypes } from "@/data/cars";
+import { brands, bodyTypes } from "@/data/cars";
+import { useCatalogue } from "@/hooks/use-catalogue";
 import heroShowroom from "@/assets/hero-showroom.jpg";
 import { SlidersHorizontal } from "lucide-react";
 
@@ -49,6 +50,8 @@ function InventoryPage() {
   const make = search.make;
   const body = search.body;
   const newArrival = search.latest === true;
+
+  const { cars } = useCatalogue();
 
   const list = useMemo(() => {
     let out = cars.filter((c) => (make ? c.brandSlug === make : true));
