@@ -3,6 +3,8 @@ import { CarCard } from "@/components/car-card";
 import { brands, cars, featuredCars, PHONE, whatsappLink } from "@/data/cars";
 import heroShowroom from "@/assets/hero-showroom.jpg";
 import showroomInterior from "@/assets/showroom-interior.jpg";
+import heroVideoAsset from "@/assets/brand/hero-video.mp4.asset.json";
+import logoAsset from "@/assets/brand/lcg-logo.png.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -55,21 +57,62 @@ function Home() {
 
   return (
     <>
-      <section className="relative">
+      <section className="relative h-[calc(100svh-5rem)] min-h-[560px] max-h-[920px] overflow-hidden lg:h-[calc(100svh-6rem)]">
         <img
           src={heroShowroom}
           alt="Luxury and classic cars inside the Luxury Car Gallery showroom in Dubai"
-          className="h-[68vh] min-h-[420px] w-full object-cover"
+          className="absolute inset-0 h-full w-full object-cover"
         />
-        <div className="absolute inset-0 flex flex-col items-center justify-center bg-ink/55 px-6 text-center">
-          <p className="engraved text-white/75">Dubai · Established Specialists</p>
-          <h1 className="mt-8 max-w-4xl text-2xl leading-tight text-white uppercase md:text-4xl lg:text-5xl">
-            Over {available} Luxury, Performance &amp; Classic Cars In Our Inventory
+        <video
+          className="absolute inset-0 h-full w-full object-cover"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          poster={heroShowroom}
+          aria-hidden="true"
+        >
+          <source src={heroVideoAsset.url} type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 bg-ink/50" />
+        <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-ink/85 to-transparent" />
+        <div className="relative mx-auto flex h-full max-w-[1500px] flex-col items-start justify-end px-5 pb-16 lg:px-10 lg:pb-20">
+          <img
+            src={logoAsset.url}
+            alt="Luxury Car Gallery"
+            className="mb-7 h-auto w-48 object-contain md:w-60"
+          />
+          <p className="engraved border-l border-accent pl-4 text-ink-foreground/80">
+            Dubai · Luxury, Performance &amp; Classic Cars
+          </p>
+          <h1 className="mt-6 max-w-5xl text-3xl leading-tight text-ink-foreground uppercase md:text-5xl lg:text-6xl">
+            Exceptional Cars.<br />Personally Selected.
           </h1>
-          <span className="mt-8 block h-px w-28 bg-white/70" />
-          <Link to="/inventory" search={{}} className="btn-ghost-light mt-10">
-            View Our Inventory
-          </Link>
+          <div className="mt-9 flex flex-wrap gap-3">
+            <Link to="/inventory" search={{}} className="btn-light">
+              Explore {available} Cars
+            </Link>
+            <Link to="/sell" className="btn-ghost-light">
+              Sell Your Car
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-b border-hairline bg-ink text-ink-foreground">
+        <div className="mx-auto grid max-w-[1500px] grid-cols-2 lg:grid-cols-4">
+          {[
+            [String(available), "Cars Available"],
+            [String(brands.length), "Prestige Marques"],
+            ["Dubai", "Private Showroom"],
+            ["Worldwide", "Delivery Available"],
+          ].map(([value, label]) => (
+            <div key={label} className="border-r border-white/10 px-5 py-7 last:border-r-0 lg:px-10">
+              <strong className="block font-display text-xl font-normal text-accent md:text-2xl">{value}</strong>
+              <span className="engraved mt-2 block text-ink-foreground/60">{label}</span>
+            </div>
+          ))}
         </div>
       </section>
 
