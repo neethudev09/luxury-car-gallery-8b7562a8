@@ -126,11 +126,11 @@ function SellPage() {
           </button>
           {sent ? <p className="mt-4 text-sm text-muted-foreground">Thank you — our team has your details and will be in touch shortly.</p> : null}
           {error ? <p className="mt-4 text-sm text-accent">{error}</p> : null}
-          <
+          <a
             href={`${whatsappLink("")}${message}`}
             target="_blank"
             rel="noreferrer"
-            className="btn-ink mt-8 w-full"
+            className="btn-outline-ink mt-3 w-full"
           >
             Send Via WhatsApp
           </a>
@@ -140,7 +140,7 @@ function SellPage() {
           >
             Send By Email
           </a>
-        </div>
+        </form>
       </div>
       </div>
     </>
