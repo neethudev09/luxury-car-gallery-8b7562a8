@@ -61,7 +61,7 @@ export function SiteFooter() {
               </Link>
             </li>
             <li>
-              <Link to="/inventory" search={{ latest: "true" }} className="transition-colors hover:text-accent">
+              <Link to="/inventory" search={{ latest: true }} className="transition-colors hover:text-accent">
                 New Arrivals
               </Link>
             </li>
