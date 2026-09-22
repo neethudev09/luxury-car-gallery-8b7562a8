@@ -15,6 +15,7 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as InventoryRouteImport } from './routes/inventory'
 import { Route as SellRouteImport } from './routes/sell'
 import { Route as CarsSlugRouteImport } from './routes/cars.$slug'
+import { Route as ApiPublicPhotoSplatRouteImport } from './routes/api/public/photo.$'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -46,6 +47,11 @@ const CarsSlugRoute = CarsSlugRouteImport.update({
   path: '/cars/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicPhotoSplatRoute = ApiPublicPhotoSplatRouteImport.update({
+  id: '/api/public/photo/$',
+  path: '/api/public/photo/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -54,6 +60,7 @@ export interface FileRoutesByFullPath {
   '/inventory': typeof InventoryRoute
   '/sell': typeof SellRoute
   '/cars/$slug': typeof CarsSlugRoute
+  '/api/public/photo/$': typeof ApiPublicPhotoSplatRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -62,6 +69,7 @@ export interface FileRoutesByTo {
   '/inventory': typeof InventoryRoute
   '/sell': typeof SellRoute
   '/cars/$slug': typeof CarsSlugRoute
+  '/api/public/photo/$': typeof ApiPublicPhotoSplatRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -71,13 +79,27 @@ export interface FileRoutesById {
   '/inventory': typeof InventoryRoute
   '/sell': typeof SellRoute
   '/cars/$slug': typeof CarsSlugRoute
+  '/api/public/photo/$': typeof ApiPublicPhotoSplatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/about' | '/contact' | '/inventory' | '/sell' | '/cars/$slug'
+    | '/'
+    | '/about'
+    | '/contact'
+    | '/inventory'
+    | '/sell'
+    | '/cars/$slug'
+    | '/api/public/photo/$'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/contact' | '/inventory' | '/sell' | '/cars/$slug'
+  to:
+    | '/'
+    | '/about'
+    | '/contact'
+    | '/inventory'
+    | '/sell'
+    | '/cars/$slug'
+    | '/api/public/photo/$'
   id:
     | '__root__'
     | '/'
@@ -86,6 +108,7 @@ export interface FileRouteTypes {
     | '/inventory'
     | '/sell'
     | '/cars/$slug'
+    | '/api/public/photo/$'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -95,6 +118,7 @@ export interface RootRouteChildren {
   InventoryRoute: typeof InventoryRoute
   SellRoute: typeof SellRoute
   CarsSlugRoute: typeof CarsSlugRoute
+  ApiPublicPhotoSplatRoute: typeof ApiPublicPhotoSplatRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -141,6 +165,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CarsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/photo/$': {
+      id: '/api/public/photo/$'
+      path: '/api/public/photo/$'
+      fullPath: '/api/public/photo/$'
+      preLoaderRoute: typeof ApiPublicPhotoSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -151,6 +182,7 @@ const rootRouteChildren: RootRouteChildren = {
   InventoryRoute: InventoryRoute,
   SellRoute: SellRoute,
   CarsSlugRoute: CarsSlugRoute,
+  ApiPublicPhotoSplatRoute: ApiPublicPhotoSplatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
