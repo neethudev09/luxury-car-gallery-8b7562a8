@@ -10,7 +10,10 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as ContactRouteImport } from './routes/contact'
 import { Route as InventoryRouteImport } from './routes/inventory'
+import { Route as SellRouteImport } from './routes/sell'
 import { Route as CarsSlugRouteImport } from './routes/cars.$slug'
 
 const IndexRoute = IndexRouteImport.update({
@@ -18,9 +21,24 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const InventoryRoute = InventoryRouteImport.update({
   id: '/inventory',
   path: '/inventory',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SellRoute = SellRouteImport.update({
+  id: '/sell',
+  path: '/sell',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CarsSlugRoute = CarsSlugRouteImport.update({
@@ -31,31 +49,51 @@ const CarsSlugRoute = CarsSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/contact': typeof ContactRoute
   '/inventory': typeof InventoryRoute
+  '/sell': typeof SellRoute
   '/cars/$slug': typeof CarsSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/contact': typeof ContactRoute
   '/inventory': typeof InventoryRoute
+  '/sell': typeof SellRoute
   '/cars/$slug': typeof CarsSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/contact': typeof ContactRoute
   '/inventory': typeof InventoryRoute
+  '/sell': typeof SellRoute
   '/cars/$slug': typeof CarsSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/inventory' | '/cars/$slug'
+  fullPaths:
+    '/' | '/about' | '/contact' | '/inventory' | '/sell' | '/cars/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/inventory' | '/cars/$slug'
-  id: '__root__' | '/' | '/inventory' | '/cars/$slug'
+  to: '/' | '/about' | '/contact' | '/inventory' | '/sell' | '/cars/$slug'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/contact'
+    | '/inventory'
+    | '/sell'
+    | '/cars/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
+  ContactRoute: typeof ContactRoute
   InventoryRoute: typeof InventoryRoute
+  SellRoute: typeof SellRoute
   CarsSlugRoute: typeof CarsSlugRoute
 }
 
@@ -68,11 +106,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/inventory': {
       id: '/inventory'
       path: '/inventory'
       fullPath: '/inventory'
       preLoaderRoute: typeof InventoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sell': {
+      id: '/sell'
+      path: '/sell'
+      fullPath: '/sell'
+      preLoaderRoute: typeof SellRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/cars/$slug': {
@@ -87,7 +146,10 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
+  ContactRoute: ContactRoute,
   InventoryRoute: InventoryRoute,
+  SellRoute: SellRoute,
   CarsSlugRoute: CarsSlugRoute,
 }
 export const routeTree = rootRouteImport
