@@ -215,23 +215,56 @@ function CarDetail() {
         </button>
       </section>
 
-      {/* Thumbnail strip */}
+      {/* Curated mosaic — fixed grid, no scrolling */}
       {gallery.length > 1 && (
-        <div className="border-b border-hairline bg-background">
-          <div className="mx-auto flex max-w-[1500px] gap-2 overflow-x-auto px-5 py-3 lg:gap-3 lg:px-10">
-            {gallery.map((img, i) => (
-              <button
-                key={`${img}-strip-${i}`}
-                type="button"
-                onClick={() => setActive(i)}
-                aria-label={`View photo ${i + 1} of ${gallery.length}`}
-                className={`w-[92px] shrink-0 border transition lg:w-[110px] ${
-                  i === index ? "border-accent" : "border-hairline hover:border-accent"
-                }`}
-              >
-                <img src={img} alt="" loading="lazy" className="aspect-[4/3] w-full object-cover" />
-              </button>
-            ))}
+        <div className="bg-ink">
+          <div className="mx-auto grid max-w-[1500px] grid-cols-3 gap-px bg-ink-foreground/10 sm:grid-cols-6">
+            {gallery.slice(1, 6).map((img, i) => {
+              const photoIndex = i + 1;
+              return (
+                <button
+                  key={`${img}-mosaic-${photoIndex}`}
+                  type="button"
+                  onClick={() => setActive(photoIndex)}
+                  aria-label={`View photo ${photoIndex + 1} of ${gallery.length}`}
+                  className="group relative aspect-[4/3] overflow-hidden bg-ink"
+                >
+                  <img
+                    src={img}
+                    alt=""
+                    loading="lazy"
+                    className={`h-full w-full object-cover transition duration-500 group-hover:opacity-100 ${
+                      photoIndex === index ? "opacity-100" : "opacity-70"
+                    }`}
+                  />
+                  <span
+                    aria-hidden="true"
+                    className={`pointer-events-none absolute inset-0 border transition ${
+                      photoIndex === index
+                        ? "border-accent"
+                        : "border-transparent group-hover:border-accent/50"
+                    }`}
+                  />
+                </button>
+              );
+            })}
+
+            <button
+              type="button"
+              onClick={() => setLightbox(true)}
+              aria-label={`Open full gallery of ${gallery.length} photos`}
+              className="group relative flex aspect-[4/3] flex-col items-center justify-center bg-ink"
+            >
+              <span aria-hidden="true" className="absolute inset-0 bg-accent/5 transition group-hover:bg-transparent" />
+              <span className="font-display text-xl font-light tracking-widest text-accent md:text-2xl">
+                {gallery.length > 6 ? `+${gallery.length - 6}` : gallery.length}
+              </span>
+              <span className="engraved mt-2 text-ink-foreground/50">Catalogue</span>
+              <span
+                aria-hidden="true"
+                className="absolute inset-x-0 bottom-0 h-px origin-left scale-x-0 bg-accent transition-transform duration-500 group-hover:scale-x-100"
+              />
+            </button>
           </div>
         </div>
       )}
