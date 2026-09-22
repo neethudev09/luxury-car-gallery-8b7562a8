@@ -1,5 +1,6 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { ChevronLeft, ChevronRight, Expand, X } from "lucide-react";
 import { CarCard } from "@/components/car-card";
 import { cars, getCar, formatPrice, PHONE, EMAIL, whatsappLink } from "@/data/cars";
 
