@@ -97,6 +97,22 @@ function InventoryPage() {
 
           <div className="ml-auto flex flex-wrap gap-3">
             <select
+              value={status ?? ""}
+              onChange={(e) =>
+                navigate({
+                  to: "/inventory",
+                  search: (prev) => ({ ...prev, status: e.target.value || undefined }),
+                })
+              }
+              aria-label="Filter by availability"
+              className="rounded-full border border-hairline bg-background px-5 py-3 text-[10px] font-semibold uppercase outline-none focus:border-foreground"
+            >
+              <option value="">Available &amp; Sold</option>
+              <option value="available">Available</option>
+              <option value="sold">Sold</option>
+            </select>
+
+            <select
               value={make ?? ""}
               onChange={(e) =>
                 navigate({
