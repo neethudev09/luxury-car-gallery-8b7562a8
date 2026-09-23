@@ -20,6 +20,7 @@ export const Route = createFileRoute("/inventory")({
     body: typeof search["body"] === "string" ? search["body"] : undefined,
     sort: typeof search["sort"] === "string" ? search["sort"] : undefined,
     latest: search["latest"] === true || search["latest"] === "true" ? true : undefined,
+    status: typeof search["status"] === "string" ? search["status"] : undefined,
   }),
   head: () => ({
     meta: [
