@@ -52,6 +52,7 @@ function InventoryPage() {
   const make = search.make;
   const body = search.body;
   const newArrival = search.latest === true;
+  const status = search.status;
 
   const { cars } = useCatalogue();
 
@@ -59,6 +60,8 @@ function InventoryPage() {
     let out = cars.filter((c) => (make ? c.brandSlug === make : true));
     if (body) out = out.filter((c) => c.bodyType === body);
     if (newArrival) out = out.filter((c) => c.newArrival);
+    if (status === "available") out = out.filter((c) => !c.sold);
+    else if (status === "sold") out = out.filter((c) => c.sold);
     const sorted = [...out];
     if (sort === "price-asc") sorted.sort((a, b) => a.price - b.price);
     else if (sort === "year-desc") sorted.sort((a, b) => b.year - a.year);
