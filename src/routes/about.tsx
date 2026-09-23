@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, Check, Globe2, SearchCheck, ShieldCheck, Sparkles } from "lucide-react";
+import { ArrowRight, Globe2, SearchCheck, ShieldCheck, Sparkles } from "lucide-react";
 import showroomInterior from "@/assets/showroom-interior.jpg";
 import { brands, whatsappLink } from "@/data/cars";
 
