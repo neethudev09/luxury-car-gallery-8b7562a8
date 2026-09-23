@@ -11,6 +11,7 @@ type InventorySearch = {
   body?: string | undefined;
   sort?: string | undefined;
   latest?: boolean | undefined;
+  status?: string | undefined;
 };
 
 export const Route = createFileRoute("/inventory")({
