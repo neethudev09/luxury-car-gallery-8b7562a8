@@ -11,6 +11,7 @@ type InventorySearch = {
   body?: string | undefined;
   sort?: string | undefined;
   latest?: boolean | undefined;
+  status?: string | undefined;
 };
 
 export const Route = createFileRoute("/inventory")({
@@ -19,6 +20,7 @@ export const Route = createFileRoute("/inventory")({
     body: typeof search["body"] === "string" ? search["body"] : undefined,
     sort: typeof search["sort"] === "string" ? search["sort"] : undefined,
     latest: search["latest"] === true || search["latest"] === "true" ? true : undefined,
+    status: typeof search["status"] === "string" ? search["status"] : undefined,
   }),
   head: () => ({
     meta: [
@@ -50,6 +52,7 @@ function InventoryPage() {
   const make = search.make;
   const body = search.body;
   const newArrival = search.latest === true;
+  const status = search.status;
 
   const { cars } = useCatalogue();
 
@@ -57,13 +60,15 @@ function InventoryPage() {
     let out = cars.filter((c) => (make ? c.brandSlug === make : true));
     if (body) out = out.filter((c) => c.bodyType === body);
     if (newArrival) out = out.filter((c) => c.newArrival);
+    if (status === "available") out = out.filter((c) => !c.sold);
+    else if (status === "sold") out = out.filter((c) => c.sold);
     const sorted = [...out];
     if (sort === "price-asc") sorted.sort((a, b) => a.price - b.price);
     else if (sort === "year-desc") sorted.sort((a, b) => b.year - a.year);
     else if (sort === "km-asc") sorted.sort((a, b) => a.mileage - b.mileage);
     else sorted.sort((a, b) => b.price - a.price);
     return sorted;
-  }, [cars, make, body, newArrival, sort]);
+  }, [cars, make, body, newArrival, status, sort]);
 
   const counts = useMemo(() => {
     const m: Record<string, number> = {};
@@ -91,6 +96,22 @@ function InventoryPage() {
           <p className="flex items-center gap-2 text-xs font-semibold uppercase"><SlidersHorizontal className="size-4" /> {list.length} Vehicles</p>
 
           <div className="ml-auto flex flex-wrap gap-3">
+            <select
+              value={status ?? ""}
+              onChange={(e) =>
+                navigate({
+                  to: "/inventory",
+                  search: (prev) => ({ ...prev, status: e.target.value || undefined }),
+                })
+              }
+              aria-label="Filter by availability"
+              className="rounded-full border border-hairline bg-background px-5 py-3 text-[10px] font-semibold uppercase outline-none focus:border-foreground"
+            >
+              <option value="">Available &amp; Sold</option>
+              <option value="available">Available</option>
+              <option value="sold">Sold</option>
+            </select>
+
             <select
               value={make ?? ""}
               onChange={(e) =>
