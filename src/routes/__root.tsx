@@ -135,6 +135,7 @@ function RootComponent() {
         <Outlet />
       </main>
       <SiteFooter />
+      <FloatingActions />
     </QueryClientProvider>
   );
 }
