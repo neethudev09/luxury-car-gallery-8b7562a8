@@ -20,6 +20,7 @@ import { Route as AuthenticatedAdminRouteRouteImport } from './routes/_authentic
 import { Route as CarsSlugRouteImport } from './routes/cars.$slug'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin/index'
 import { Route as AuthenticatedAdminEnquiriesRouteImport } from './routes/_authenticated/admin/enquiries'
+import { Route as AuthenticatedAdminSettingsRouteImport } from './routes/_authenticated/admin/settings'
 import { Route as AuthenticatedAdminSubmissionsRouteImport } from './routes/_authenticated/admin/submissions'
 import { Route as AuthenticatedAdminTeamRouteImport } from './routes/_authenticated/admin/team'
 import { Route as AuthenticatedAdminCarsIndexRouteImport } from './routes/_authenticated/admin/cars.index'
@@ -81,6 +82,12 @@ const AuthenticatedAdminEnquiriesRoute =
     path: '/enquiries',
     getParentRoute: () => AuthenticatedAdminRouteRoute,
   } as any)
+const AuthenticatedAdminSettingsRoute =
+  AuthenticatedAdminSettingsRouteImport.update({
+    id: '/settings',
+    path: '/settings',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
 const AuthenticatedAdminSubmissionsRoute =
   AuthenticatedAdminSubmissionsRouteImport.update({
     id: '/submissions',
@@ -120,6 +127,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/cars/$slug': typeof CarsSlugRoute
   '/admin/enquiries': typeof AuthenticatedAdminEnquiriesRoute
+  '/admin/settings': typeof AuthenticatedAdminSettingsRoute
   '/admin/submissions': typeof AuthenticatedAdminSubmissionsRoute
   '/admin/team': typeof AuthenticatedAdminTeamRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
@@ -136,6 +144,7 @@ export interface FileRoutesByTo {
   '/sell': typeof SellRoute
   '/cars/$slug': typeof CarsSlugRoute
   '/admin/enquiries': typeof AuthenticatedAdminEnquiriesRoute
+  '/admin/settings': typeof AuthenticatedAdminSettingsRoute
   '/admin/submissions': typeof AuthenticatedAdminSubmissionsRoute
   '/admin/team': typeof AuthenticatedAdminTeamRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
@@ -155,6 +164,7 @@ export interface FileRoutesById {
   '/_authenticated/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/cars/$slug': typeof CarsSlugRoute
   '/_authenticated/admin/enquiries': typeof AuthenticatedAdminEnquiriesRoute
+  '/_authenticated/admin/settings': typeof AuthenticatedAdminSettingsRoute
   '/_authenticated/admin/submissions': typeof AuthenticatedAdminSubmissionsRoute
   '/_authenticated/admin/team': typeof AuthenticatedAdminTeamRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
@@ -174,6 +184,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/cars/$slug'
     | '/admin/enquiries'
+    | '/admin/settings'
     | '/admin/submissions'
     | '/admin/team'
     | '/admin/'
@@ -190,6 +201,7 @@ export interface FileRouteTypes {
     | '/sell'
     | '/cars/$slug'
     | '/admin/enquiries'
+    | '/admin/settings'
     | '/admin/submissions'
     | '/admin/team'
     | '/admin'
@@ -208,6 +220,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin'
     | '/cars/$slug'
     | '/_authenticated/admin/enquiries'
+    | '/_authenticated/admin/settings'
     | '/_authenticated/admin/submissions'
     | '/_authenticated/admin/team'
     | '/_authenticated/admin/'
@@ -307,6 +320,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminEnquiriesRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
+    '/_authenticated/admin/settings': {
+      id: '/_authenticated/admin/settings'
+      path: '/settings'
+      fullPath: '/admin/settings'
+      preLoaderRoute: typeof AuthenticatedAdminSettingsRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
     '/_authenticated/admin/submissions': {
       id: '/_authenticated/admin/submissions'
       path: '/submissions'
@@ -347,6 +367,7 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedAdminRouteRouteChildren {
   AuthenticatedAdminEnquiriesRoute: typeof AuthenticatedAdminEnquiriesRoute
+  AuthenticatedAdminSettingsRoute: typeof AuthenticatedAdminSettingsRoute
   AuthenticatedAdminSubmissionsRoute: typeof AuthenticatedAdminSubmissionsRoute
   AuthenticatedAdminTeamRoute: typeof AuthenticatedAdminTeamRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
@@ -357,6 +378,7 @@ interface AuthenticatedAdminRouteRouteChildren {
 const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren =
   {
     AuthenticatedAdminEnquiriesRoute: AuthenticatedAdminEnquiriesRoute,
+    AuthenticatedAdminSettingsRoute: AuthenticatedAdminSettingsRoute,
     AuthenticatedAdminSubmissionsRoute: AuthenticatedAdminSubmissionsRoute,
     AuthenticatedAdminTeamRoute: AuthenticatedAdminTeamRoute,
     AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
