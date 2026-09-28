@@ -28,7 +28,7 @@ export function SearchOverlay({ open, onClose }: { open: boolean; onClose: () =>
   };
 
   return (
-    <div className={`fixed inset-0 z-[80] bg-background/98 backdrop-blur-xl transition duration-300 ${open ? "visible opacity-100" : "invisible opacity-0"}`} aria-hidden={!open} role="dialog" aria-label="Search vehicles">
+    <div className={`fixed inset-0 z-[80] bg-background/80 backdrop-blur-md transition duration-300 ${open ? "visible opacity-100" : "invisible opacity-0"}`} aria-hidden={!open} role="dialog" aria-label="Search vehicles">
       <div className="mx-auto max-w-3xl px-5 pt-6 lg:pt-16">
         <div className="flex justify-end">
           <button type="button" onClick={onClose} aria-label="Close search" className="flex size-10 items-center justify-center rounded-full hover:bg-secondary">
