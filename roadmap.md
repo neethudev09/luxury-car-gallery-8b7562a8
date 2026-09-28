@@ -8,3 +8,4 @@
 - [x] Validate desktop and mobile user flows
 - [x] Confirm route metadata remains complete
 - [x] Expand About page with company story, service standards, figures, and FAQs
+- [x] Add administrator logo settings and site-wide uploaded branding

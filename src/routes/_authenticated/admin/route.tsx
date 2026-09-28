@@ -1,6 +1,7 @@
 import { createFileRoute, Link, Outlet, useNavigate } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/_authenticated/admin")({
   component: AdminShell,
@@ -23,6 +24,7 @@ const links = [
   { to: "/admin/enquiries", label: "Enquiries" },
   { to: "/admin/submissions", label: "Sell requests" },
   { to: "/admin/team", label: "Team" },
+  { to: "/admin/settings", label: "Settings" },
 ] as const;
 
 function AdminShell() {
@@ -48,9 +50,9 @@ function AdminShell() {
           <Link to="/" className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground hover:text-foreground">
             View website
           </Link>
-          <button type="button" onClick={signOut} className="btn-outline-ink">
+          <Button type="button" variant="outline" onClick={signOut} className="btn-outline-ink">
             Sign out
-          </button>
+          </Button>
         </div>
       </div>
 

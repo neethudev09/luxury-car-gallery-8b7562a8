@@ -2,8 +2,8 @@ import { Link } from "@tanstack/react-router";
 import { Menu, Search, X, Phone, ArrowUpRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import { PHONE, EMAIL, whatsappLink } from "@/data/cars";
-import logoAsset from "@/assets/brand/lcg-logo.png.asset.json";
 import { Button } from "@/components/ui/button";
+import { siteLogoUrl, useSiteSettings } from "@/hooks/use-site-settings";
 
 const nav = [
   { label: "Inventory", to: "/inventory" as const },
@@ -14,6 +14,8 @@ const nav = [
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
+  const { data: settings } = useSiteSettings();
+  const logoUrl = siteLogoUrl(settings?.logo_path);
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
@@ -29,7 +31,7 @@ export function SiteHeader() {
           </Button>
 
           <Link to="/" aria-label="Luxury Car Gallery home" className="absolute left-1/2 -translate-x-1/2">
-            <img src={logoAsset.url} alt="Luxury Car Gallery" className="h-14 w-28 object-contain brightness-0" />
+            <img src={logoUrl} alt="Luxury Car Gallery" className="h-14 w-28 object-contain brightness-0" />
           </Link>
 
           <div className="flex items-center gap-1">
@@ -47,7 +49,7 @@ export function SiteHeader() {
         <div className="mx-auto flex h-full max-w-[1600px] flex-col px-5 lg:px-10">
           <div className="relative flex h-16 shrink-0 items-center justify-between border-b border-ink-foreground/10">
             <span className="engraved text-ink-foreground/45">Dubai · UAE</span>
-            <img src={logoAsset.url} alt="Luxury Car Gallery" className="absolute left-1/2 h-14 w-28 -translate-x-1/2 object-contain" />
+            <img src={logoUrl} alt="Luxury Car Gallery" className="absolute left-1/2 h-14 w-28 -translate-x-1/2 object-contain" />
             <Button type="button" variant="ghost" size="icon" onClick={() => setOpen(false)} aria-label="Close menu" className="rounded-full text-ink-foreground hover:bg-ink-foreground/10 hover:text-ink-foreground">
               <X className="size-5" />
             </Button>

@@ -1,9 +1,12 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowUpRight } from "lucide-react";
 import { PHONE, EMAIL, brands, whatsappLink } from "@/data/cars";
-import logoAsset from "@/assets/brand/lcg-logo.png.asset.json";
+import { siteLogoUrl, useSiteSettings } from "@/hooks/use-site-settings";
 
 export function SiteFooter() {
+  const { data: settings } = useSiteSettings();
+  const logoUrl = siteLogoUrl(settings?.logo_path);
+
   return (
     <footer className="mt-24 bg-ink text-ink-foreground">
       <div className="mx-auto max-w-[1600px] px-5 pb-8 pt-16 lg:px-10 lg:pt-24">
@@ -13,7 +16,7 @@ export function SiteFooter() {
         </div>
 
         <div className="grid gap-12 py-14 sm:grid-cols-2 lg:grid-cols-4">
-          <div><img src={logoAsset.url} alt="Luxury Car Gallery" className="h-20 w-40 object-contain" /><p className="mt-5 max-w-xs text-sm leading-6 text-ink-foreground/55">Exceptional luxury, performance and classic cars, selected in Dubai and delivered worldwide.</p></div>
+          <div><img src={logoUrl} alt="Luxury Car Gallery" className="h-20 w-40 object-contain" /><p className="mt-5 max-w-xs text-sm leading-6 text-ink-foreground/55">Exceptional luxury, performance and classic cars, selected in Dubai and delivered worldwide.</p></div>
           <div><p className="engraved text-ink-foreground/35">Explore</p><ul className="mt-5 space-y-3 text-sm"><li><Link to="/inventory" search={{}}>Available cars</Link></li><li><Link to="/inventory" search={{ latest: true }}>New arrivals</Link></li><li><Link to="/sell">Sell your car</Link></li><li><Link to="/about">Our showroom</Link></li></ul></div>
           <div><p className="engraved text-ink-foreground/35">Marques</p><div className="mt-5 grid grid-cols-2 gap-x-5 gap-y-3 text-sm">{brands.slice(0, 10).map((brand) => <Link key={brand.slug} to="/inventory" search={{ make: brand.slug }} className="text-ink-foreground/70 hover:text-ink-foreground">{brand.name}</Link>)}</div></div>
           <div><p className="engraved text-ink-foreground/35">Contact</p><div className="mt-5 space-y-3 text-sm text-ink-foreground/70"><a href={`tel:${PHONE.replace(/\s/g, "")}`} className="block hover:text-ink-foreground">{PHONE}</a><a href={`mailto:${EMAIL}`} className="block break-words hover:text-ink-foreground">{EMAIL}</a><p>Al Quoz, Dubai<br />United Arab Emirates</p></div></div>
