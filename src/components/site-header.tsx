@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { PHONE, EMAIL, whatsappLink } from "@/data/cars";
 import { Button } from "@/components/ui/button";
 import { siteLogoUrl, useSiteSettings } from "@/hooks/use-site-settings";
+import { SearchOverlay } from "@/components/search-overlay";
 
 const nav = [
   { label: "Inventory", to: "/inventory" as const },
@@ -14,6 +15,7 @@ const nav = [
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const { data: settings } = useSiteSettings();
   const logoUrl = siteLogoUrl(settings?.logo_path);
   useEffect(() => {
@@ -35,15 +37,16 @@ export function SiteHeader() {
           </Link>
 
           <div className="flex items-center gap-1">
-            <Link to="/inventory" aria-label="Search inventory" title="Search inventory" className="flex size-10 items-center justify-center rounded-full transition-colors hover:bg-secondary">
+            <button type="button" onClick={() => setSearchOpen(true)} aria-label="Search inventory" title="Search inventory" className="flex size-10 items-center justify-center rounded-full transition-colors hover:bg-secondary">
               <Search className="size-[17px]" strokeWidth={1.6} />
-            </Link>
+            </button>
             <a href={`tel:${PHONE.replace(/\s/g, "")}`} aria-label="Call showroom" title="Call showroom" className="hidden size-10 items-center justify-center rounded-full transition-colors hover:bg-secondary sm:flex">
               <Phone className="size-[17px]" strokeWidth={1.6} />
             </a>
           </div>
         </div>
       </header>
+      <SearchOverlay open={searchOpen} onClose={() => setSearchOpen(false)} />
 
       <div className={`fixed inset-0 z-[70] bg-ink text-ink-foreground transition duration-500 ${open ? "visible opacity-100" : "invisible opacity-0"}`} aria-hidden={!open}>
         <div className="mx-auto flex h-full max-w-[1600px] flex-col px-5 lg:px-10">
