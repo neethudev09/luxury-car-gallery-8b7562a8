@@ -1,10 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { CarCard } from "@/components/car-card";
 import { brands, bodyTypes } from "@/data/cars";
 import { useCatalogue } from "@/hooks/use-catalogue";
+import { matchesQuery } from "@/lib/car-search";
 import heroShowroom from "@/assets/hero-showroom.jpg";
-import { SlidersHorizontal } from "lucide-react";
+import { SlidersHorizontal, Search } from "lucide-react";
 
 type InventorySearch = {
   make?: string | undefined;
@@ -12,6 +13,7 @@ type InventorySearch = {
   sort?: string | undefined;
   latest?: boolean | undefined;
   status?: string | undefined;
+  q?: string | undefined;
 };
 
 export const Route = createFileRoute("/inventory")({
@@ -21,6 +23,7 @@ export const Route = createFileRoute("/inventory")({
     sort: typeof search["sort"] === "string" ? search["sort"] : undefined,
     latest: search["latest"] === true || search["latest"] === "true" ? true : undefined,
     status: typeof search["status"] === "string" ? search["status"] : undefined,
+    q: typeof search["q"] === "string" ? search["q"] : undefined,
   }),
   head: () => ({
     meta: [
@@ -53,11 +56,14 @@ function InventoryPage() {
   const body = search.body;
   const newArrival = search.latest === true;
   const status = search.status;
+  const [query, setQuery] = useState(search.q ?? "");
+  useEffect(() => setQuery(search.q ?? ""), [search.q]);
 
   const { cars } = useCatalogue();
 
   const list = useMemo(() => {
     let out = cars.filter((c) => (make ? c.brandSlug === make : true));
+    if (search.q) out = out.filter((c) => matchesQuery(c, search.q));
     if (body) out = out.filter((c) => c.bodyType === body);
     if (newArrival) out = out.filter((c) => c.newArrival);
     if (status === "available") out = out.filter((c) => !c.sold);
@@ -68,7 +74,7 @@ function InventoryPage() {
     else if (sort === "km-asc") sorted.sort((a, b) => a.mileage - b.mileage);
     else sorted.sort((a, b) => b.price - a.price);
     return sorted;
-  }, [cars, make, body, newArrival, status, sort]);
+  }, [cars, make, body, newArrival, status, sort, search.q]);
 
   const counts = useMemo(() => {
     const m: Record<string, number> = {};
@@ -94,6 +100,21 @@ function InventoryPage() {
       <div className="mx-auto max-w-[1500px] px-5 lg:px-10">
         <div className="flex flex-wrap items-center gap-4 border-b border-hairline py-7">
           <p className="flex items-center gap-2 text-xs font-semibold uppercase"><SlidersHorizontal className="size-4" /> {list.length} Vehicles</p>
+
+          <label className="flex min-w-[220px] flex-1 items-center gap-2 rounded-full border border-hairline px-5 py-2.5 focus-within:border-foreground md:max-w-sm">
+            <Search className="size-4 shrink-0 text-muted-foreground" />
+            <input
+              type="search"
+              value={query}
+              onChange={(e) => {
+                setQuery(e.target.value);
+                navigate({ to: "/inventory", search: (prev) => ({ ...prev, q: e.target.value.trim() || undefined }), replace: true });
+              }}
+              placeholder="Search make, model, year…"
+              aria-label="Search vehicles"
+              className="w-full bg-transparent text-sm outline-none placeholder:text-muted-foreground"
+            />
+          </label>
 
           <div className="ml-auto flex flex-wrap gap-3">
             <select
