@@ -24,14 +24,14 @@ export function SiteHeader() {
   return (
     <>
       <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur-xl">
-        <div className="relative mx-auto flex h-16 max-w-[1600px] items-center justify-between px-5 lg:px-10">
+        <div className="relative mx-auto flex h-16 max-w-[1600px] items-center justify-between px-5 lg:h-20 lg:px-10">
           <Button type="button" variant="ghost" onClick={() => setOpen(true)} className="h-10 gap-3 rounded-full px-3 text-foreground hover:bg-secondary" aria-label="Open menu">
             <Menu className="size-[18px]" strokeWidth={1.6} />
             <span className="hidden text-[10px] font-medium uppercase tracking-[0.25em] sm:inline">Menu</span>
           </Button>
 
           <Link to="/" aria-label="Luxury Car Gallery home" className="absolute left-1/2 -translate-x-1/2">
-            <img src={logoUrl} alt="Luxury Car Gallery" className="h-14 w-28 object-contain brightness-0" />
+            <img src={logoUrl} alt="Luxury Car Gallery" className="h-12 w-auto object-contain lg:h-16" />
           </Link>
 
           <div className="flex items-center gap-1">
