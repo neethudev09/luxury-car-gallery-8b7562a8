@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import fallbackLogo from "@/assets/brand/lcg-logo.png.asset.json";
+const fallbackLogo = { url: "/brand/lcg-logo.png" };
 import { getSiteSettings } from "@/lib/settings.functions";
 
 export const SITE_SETTINGS_QUERY_KEY = ["site-settings"] as const;

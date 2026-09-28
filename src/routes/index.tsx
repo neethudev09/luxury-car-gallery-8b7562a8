@@ -6,7 +6,7 @@ import { brands, PHONE, whatsappLink } from "@/data/cars";
 import { useCatalogue } from "@/hooks/use-catalogue";
 import heroShowroom from "@/assets/hero-showroom.jpg";
 import showroomInterior from "@/assets/showroom-interior.jpg";
-import heroVideoAsset from "@/assets/brand/hero-video.mp4.asset.json";
+const heroVideoAsset = { url: "/brand/hero-video.mp4" };
 
 const brandIconMap: Record<string, string> = {
   "aston-martin": "car-aston-martin",
